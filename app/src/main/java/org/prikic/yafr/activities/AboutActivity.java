@@ -15,7 +15,6 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.about_screen);
 
         TextView application_version = (TextView) findViewById(R.id.application_version);
-
         application_version.setText(BuildConfig.VERSION_NAME);
 
     }
