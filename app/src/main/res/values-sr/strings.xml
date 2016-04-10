@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_settings">O Programu</string>
+    <string name="about">O Programu</string>
     <string name="worth_mentioning_text">Šta god programer smatra vrednim pominjanja</string>
-    <string name="author_name">Ime autora</string>
 </resources>
