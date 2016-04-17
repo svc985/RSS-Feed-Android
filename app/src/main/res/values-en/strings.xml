@@ -2,4 +2,6 @@
 <resources>
     <string name="about">About</string>
     <string name="worth_mentioning_text">Whatever developer finds worth mentioning</string>
+    <string name="source_name">Source Name</string>
+    <string name="source_url">Source URL</string>
 </resources>

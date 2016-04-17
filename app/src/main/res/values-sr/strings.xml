@@ -2,4 +2,10 @@
 <resources>
     <string name="about">O Programu</string>
     <string name="worth_mentioning_text">Šta god programer smatra vrednim pominjanja</string>
+    <string name="source_name">Ime RSS kanala</string>
+    <string name="source_url">URL RSS kanala</string>
+    <string name="save">Sačuvaj</string>
+    <string name="cancel">Poništi</string>
+    <string name="save_new_rss_source">Sačuvaj novi RSS kanal</string>
+    <string name="edit_rss_source">Edituj postojeći RSS kanal</string>
 </resources>
