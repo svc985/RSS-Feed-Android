@@ -15,14 +15,19 @@ import android.view.MenuItem;
 import org.prikic.yafr.activities.AboutActivity;
 import org.prikic.yafr.activities.FavoritesFragment;
 import org.prikic.yafr.activities.FeedsFragment;
+import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
+import org.prikic.yafr.db.dao.RssChannelDAO;
+import org.prikic.yafr.model.RssChannel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SaveOrEditChannelFragment.OnRssChannelSavedListener{
+
+    RssChannelDAO rssChannelDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null)
         tabLayout.setupWithViewPager(viewPager);
+
+        rssChannelDAO = new RssChannelDAO(this);
 
     }
 
@@ -101,5 +108,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onRssChannelSaved(RssChannel rssChannel) {
+        Timber.d("saving Rss channel in db...");
+        long rowId = rssChannelDAO.saveRssChannel(rssChannel);
+        Timber.d("id of saved channel:%d", rowId);
     }
 }
