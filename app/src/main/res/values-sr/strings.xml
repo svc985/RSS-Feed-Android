@@ -8,4 +8,5 @@
     <string name="cancel">Poništi</string>
     <string name="save_new_rss_source">Sačuvaj novi RSS kanal</string>
     <string name="edit_rss_source">Edituj postojeći RSS kanal</string>
+    <string name="rss_channel_saved">Rss kanal sačuvan</string>
 </resources>

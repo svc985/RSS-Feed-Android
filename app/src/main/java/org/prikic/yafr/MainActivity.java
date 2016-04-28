@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,8 @@ import org.prikic.yafr.activities.FeedsFragment;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
 import org.prikic.yafr.db.dao.RssChannelDAO;
+import org.prikic.yafr.loaders.ChannelLoader;
+import org.prikic.yafr.loaders.Loaders;
 import org.prikic.yafr.model.RssChannel;
 
 import java.util.ArrayList;
@@ -25,9 +29,13 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements SaveOrEditChannelFragment.OnRssChannelSavedListener{
+public class MainActivity extends AppCompatActivity
+        implements SaveOrEditChannelFragment.OnRssChannelSavedListener,
+        LoaderManager.LoaderCallbacks<List<RssChannel>>{
 
     RssChannelDAO rssChannelDAO;
+
+    ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +54,16 @@ public class MainActivity extends AppCompatActivity implements SaveOrEditChannel
 
         rssChannelDAO = new RssChannelDAO(this);
 
+        getSupportLoaderManager().initLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal(), null, this).forceLoad();
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FeedsFragment(), "Feeds");
-        adapter.addFragment(new FavoritesFragment(), "Favorites");
-        adapter.addFragment(new SourcesFragment(), "Sources");
-        viewPager.setAdapter(adapter);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(new FeedsFragment(), "Feeds");
+        viewPagerAdapter.addFragment(new FavoritesFragment(), "Favorites");
+        viewPagerAdapter.addFragment(new SourcesFragment(), "Sources");
+        viewPager.setAdapter(viewPagerAdapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -110,11 +120,31 @@ public class MainActivity extends AppCompatActivity implements SaveOrEditChannel
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onRssChannelSaved(RssChannel rssChannel) {
         Timber.d("saving Rss channel in db...");
-        long rowId = rssChannelDAO.saveRssChannel(rssChannel);
-        Timber.d("id of saved channel:%d", rowId);
+        //long rowId = rssChannelDAO.saveRssChannel(rssChannel);
+        //Timber.d("id of saved channel:%d", rowId);
+
+        SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
+        sourcesFragment.displaySnackbar();
+    }
+
+    @Override
+    public ChannelLoader onCreateLoader(int id, Bundle args) {
+        Timber.d("onCreate Loader - load rss channels");
+        return new ChannelLoader(MainActivity.this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<RssChannel>> loader, List<RssChannel> data) {
+        //TODO
+        Timber.d("load finished for loading rss channels, with size:%d", data.size());
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<RssChannel>> loader) {
+        //TODO
+        Timber.d("loader reset for loading rss channels");
     }
 }

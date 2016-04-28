@@ -99,9 +99,8 @@ public class SaveOrEditChannelFragment extends DialogFragment {
         String name = editTxtName.getText().toString();
         String url = editTxtUrl.getText().toString();
 
-        RssChannel rssChannel = new RssChannel(name, url);
+        return new RssChannel(name, url);
 
-        return rssChannel;
     }
 
     public interface OnRssChannelSavedListener {

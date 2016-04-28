@@ -11,4 +11,5 @@
     <string name="cancel">Cancel</string>
     <string name="save_new_rss_source">Save new RSS channel</string>
     <string name="edit_rss_source">Edit existing RSS channel</string>
+    <string name="rss_channel_saved">Rss Channel saved</string>
 </resources>
