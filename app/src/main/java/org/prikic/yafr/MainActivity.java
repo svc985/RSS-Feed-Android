@@ -19,7 +19,7 @@ import org.prikic.yafr.activities.FavoritesFragment;
 import org.prikic.yafr.activities.FeedsFragment;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
-import org.prikic.yafr.db.dao.RssChannelDAO;
+import org.prikic.yafr.background.SourceSaveAsyncTask;
 import org.prikic.yafr.loaders.ChannelLoader;
 import org.prikic.yafr.loaders.Loaders;
 import org.prikic.yafr.model.RssChannel;
@@ -33,14 +33,19 @@ public class MainActivity extends AppCompatActivity
         implements SaveOrEditChannelFragment.OnRssChannelSavedListener,
         LoaderManager.LoaderCallbacks<List<RssChannel>>{
 
-    RssChannelDAO rssChannelDAO;
-
     ViewPagerAdapter viewPagerAdapter;
+
+    private boolean showProgressSpinnerInToolbar = false;
+
+    public void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
+        this.showProgressSpinnerInToolbar = showProgressSpinnerInToolbar;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,8 +56,6 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null)
         tabLayout.setupWithViewPager(viewPager);
-
-        rssChannelDAO = new RssChannelDAO(this);
 
         getSupportLoaderManager().initLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal(), null, this).forceLoad();
 
@@ -99,6 +102,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem progressSpinner = menu.findItem(R.id.progress_spinner_menu_item);
+        if (!showProgressSpinnerInToolbar) {
+            progressSpinner.setVisible(false);
+        }
+        else {
+            progressSpinner.setVisible(true);
+        }
+
         return true;
     }
 
@@ -123,8 +135,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRssChannelSaved(RssChannel rssChannel) {
         Timber.d("saving Rss channel in db...");
-        //long rowId = rssChannelDAO.saveRssChannel(rssChannel);
-        //Timber.d("id of saved channel:%d", rowId);
+
+        new SourceSaveAsyncTask(rssChannel, this).execute();
 
         SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
         sourcesFragment.displaySnackbar();
@@ -146,5 +158,15 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<RssChannel>> loader) {
         //TODO
         Timber.d("loader reset for loading rss channels");
+    }
+
+    public void enableProgressSpinner(boolean flag) {
+        if (flag) {
+            setShowProgressSpinnerInToolbar(true);
+        }
+        else {
+            setShowProgressSpinnerInToolbar(false);
+        }
+        invalidateOptionsMenu();
     }
 }
