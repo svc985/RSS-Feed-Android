@@ -2,12 +2,16 @@ package org.prikic.yafr.db.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.prikic.yafr.db.RssFeedsContract;
 import org.prikic.yafr.db.RssFeedsDbHelper;
 import org.prikic.yafr.model.RssChannel;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RssChannelDAO {
 
@@ -35,8 +39,6 @@ public class RssChannelDAO {
 
         //Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        //TODO what to set for id??
-        //values.put(RssFeedsContract.ChannelEntry._ID, id);
         values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
 
@@ -49,5 +51,47 @@ public class RssChannelDAO {
         //close();
 
         return newRowId;
+    }
+
+    public List<RssChannel> getRssChannels() {
+
+        //TODO test
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<RssChannel> rssChannels = new LinkedList<>();
+
+        SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                RssFeedsContract.ChannelEntry.COLUMN_NAME + " ASC";
+
+        Cursor c = db.query(
+                RssFeedsContract.ChannelEntry.TABLE_NAME,  // The table to query
+                allColumns,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        try {
+            while (c.moveToNext()) {
+                long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));
+                String name = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_NAME));
+                String url = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_URL));
+                RssChannel rssChannel = new RssChannel(id, name, url);
+                rssChannels.add(rssChannel);
+            }
+        }
+        finally {
+            c.close();
+        }
+        return rssChannels;
     }
 }
