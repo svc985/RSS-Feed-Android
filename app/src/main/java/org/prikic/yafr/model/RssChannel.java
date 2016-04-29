@@ -6,6 +6,12 @@ public class RssChannel {
     private String name;
     private String url;
 
+    public RssChannel(Long id, String name, String url) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
+
     public RssChannel(String name, String url) {
         this.name = name;
         this.url = url;

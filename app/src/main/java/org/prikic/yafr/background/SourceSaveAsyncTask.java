@@ -29,17 +29,15 @@ public class SourceSaveAsyncTask extends AsyncTask<Void, Void, Long> {
 
     @Override
     protected Long doInBackground(Void... params) {
-        //return rssChannelDAO.saveRssChannel(rssChannel);
-        //TODO fixed for testing purposes
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return 1l;
+        return rssChannelDAO.saveRssChannel(rssChannel);
+//        //TODO fixed for testing purposes
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return 1l;
     }
-
-
 
     @Override
     protected void onPostExecute(Long channelId) {

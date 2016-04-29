@@ -3,8 +3,8 @@ package org.prikic.yafr.loaders;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.RssChannel;
-import org.prikic.yafr.util.Util;
 
 import java.util.List;
 
@@ -12,18 +12,22 @@ import timber.log.Timber;
 
 public class ChannelLoader extends AsyncTaskLoader<List<RssChannel>>{
 
+    private Context context;
+
     public ChannelLoader(Context context) {
         super(context);
         Timber.d("Channel loader - initialized");
         forceLoad();
         onContentChanged();
+        this.context = context;
     }
 
     @Override
     public List<RssChannel> loadInBackground() {
-        //TODO load data from db here??
         Timber.d("Channel loader - loadInBackground");
-        return Util.getDummyDataset();
+        //return Util.getDummyDataset();
+        RssChannelDAO rssChannelDAO = new RssChannelDAO(context);
+        return rssChannelDAO.getRssChannels();
     }
 
     @Override

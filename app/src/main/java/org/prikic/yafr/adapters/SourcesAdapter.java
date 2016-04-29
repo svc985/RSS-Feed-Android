@@ -14,6 +14,15 @@ import java.util.List;
 public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHolder> {
     private List<RssChannel> rssChannelList;
 
+    public void setRssChannelList(List<RssChannel> rssChannelList) {
+        this.rssChannelList = rssChannelList;
+    }
+
+    public void addRssChannelToChannelList(RssChannel rssChannel) {
+        rssChannelList.add(rssChannel);
+        notifyDataSetChanged();
+    }
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
