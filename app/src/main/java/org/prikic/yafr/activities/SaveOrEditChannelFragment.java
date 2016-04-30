@@ -25,10 +25,16 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
     private String fragmentTitle;
 
+    private RssChannel rssChannel;
+
     private OnRssChannelSavedListener mListener;
 
-    public void setFragmentTitle(String fragmentTitle) {
-        this.fragmentTitle = fragmentTitle;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        fragmentTitle = getArguments().getString("fragmentTitle", "Error");
+        rssChannel = (RssChannel) getArguments().getSerializable("rssChannel");
     }
 
     @NonNull
@@ -85,6 +91,12 @@ public class SaveOrEditChannelFragment extends DialogFragment {
             }
         });
 
+        if (rssChannel != null) {
+            editTxtName.setText(rssChannel.getName());
+            editTxtUrl.setText(rssChannel.getUrl());
+            btnSave.setText(getResources().getText(R.string.edit));
+        }
+
         return view;
 
     }
@@ -106,4 +118,16 @@ public class SaveOrEditChannelFragment extends DialogFragment {
     public interface OnRssChannelSavedListener {
         void onRssChannelSaved(RssChannel rssChannel);
     }
+
+    public static SaveOrEditChannelFragment newInstance(String fragmentTitle, RssChannel rssChannel) {
+        SaveOrEditChannelFragment myFragment = new SaveOrEditChannelFragment();
+
+        Bundle args = new Bundle();
+        args.putString("fragmentTitle", fragmentTitle);
+        args.putSerializable("rssChannel", rssChannel);
+        myFragment.setArguments(args);
+
+        return myFragment;
+    }
+
 }

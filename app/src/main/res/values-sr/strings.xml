@@ -6,7 +6,9 @@
     <string name="source_url">URL RSS kanala</string>
     <string name="save">Sačuvaj</string>
     <string name="cancel">Poništi</string>
+    <string name="edit">Edituj</string>
     <string name="save_new_rss_source">Sačuvaj novi RSS kanal</string>
     <string name="edit_rss_source">Edituj postojeći RSS kanal</string>
     <string name="rss_channel_saved">Rss kanal sačuvan</string>
+    <string name="image_view_show_channel_details">Prikaži detalje kanala</string>
 </resources>

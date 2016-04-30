@@ -57,7 +57,7 @@ public class RssChannelDAO {
 
         //TODO test
         try {
-            Thread.sleep(7000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

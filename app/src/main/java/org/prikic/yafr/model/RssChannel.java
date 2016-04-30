@@ -1,6 +1,8 @@
 package org.prikic.yafr.model;
 
-public class RssChannel {
+import java.io.Serializable;
+
+public class RssChannel implements Serializable{
 
     private long id;
     private String name;
