@@ -6,17 +6,20 @@ import android.os.AsyncTask;
 import org.prikic.yafr.MainActivity;
 import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.RssChannelOperation;
 
 import timber.log.Timber;
 
-public class SourceSaveAsyncTask extends AsyncTask<Void, Void, Long> {
+public class SourceSaveOrUpdateAsyncTask extends AsyncTask<Void, Void, Long> {
 
     RssChannel rssChannel;
     RssChannelDAO rssChannelDAO;
     MainActivity mainActivity;
+    RssChannelOperation operation;
 
-    public SourceSaveAsyncTask(RssChannel rssChannel, Context context) {
+    public SourceSaveOrUpdateAsyncTask(RssChannel rssChannel, RssChannelOperation operation, Context context) {
         this.rssChannel = rssChannel;
+        this.operation = operation;
         rssChannelDAO = new RssChannelDAO(context);
         mainActivity = (MainActivity) context;
     }
@@ -29,14 +32,15 @@ public class SourceSaveAsyncTask extends AsyncTask<Void, Void, Long> {
 
     @Override
     protected Long doInBackground(Void... params) {
-        return rssChannelDAO.saveRssChannel(rssChannel);
-//        //TODO fixed for testing purposes
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return 1l;
+        switch (operation) {
+            case SAVE:
+                return rssChannelDAO.saveRssChannel(rssChannel);
+            case EDIT:
+                //TODO WIP
+                rssChannelDAO.updateRssChannel(rssChannel);
+            default:
+                return -1L;
+        }
     }
 
     @Override

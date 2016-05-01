@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.RssChannelOperation;
 
 import java.util.List;
 
@@ -32,6 +33,11 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
 
     public void addRssChannelToChannelList(RssChannel rssChannel) {
         rssChannelList.add(rssChannel);
+        notifyDataSetChanged();
+    }
+
+    public void updateRssChannelListAtPosition(RssChannel rssChannel, int position) {
+        rssChannelList.set(position, rssChannel);
         notifyDataSetChanged();
     }
 
@@ -58,14 +64,19 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
         public void onClick(View v) {
 
             if(v.getId() == btnShowSourceDetails.getId()) {
+
+                int clickedItemPosition = getAdapterPosition();
+
                 Timber.d("open source details for:%s %s", txtSourceName.getText(), txtSourceURL.getText());
 
                 RssChannel rssChannel = getRssChannelDataFromTextFields();
+                RssChannel rssChannelOld = rssChannelList.get(getAdapterPosition());
+                rssChannel.setId(rssChannelOld.getId());
 
                 FragmentActivity activity = SourcesAdapter.this.fragmentActivity;
                 String fragmentTitle = activity.getResources().getString(R.string.edit_rss_source);
-                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, rssChannel);
-                fragment.show(activity.getSupportFragmentManager(), activity.getResources().getString(R.string.lorem_ipsum_short));
+                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, rssChannel, RssChannelOperation.EDIT, clickedItemPosition);
+                fragment.show(activity.getSupportFragmentManager(), "SaveOrEditChannelFragment");
 
             }
         }

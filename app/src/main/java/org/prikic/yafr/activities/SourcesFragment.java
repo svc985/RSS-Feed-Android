@@ -18,6 +18,7 @@ import org.prikic.yafr.adapters.SourcesAdapter;
 import org.prikic.yafr.loaders.ChannelLoader;
 import org.prikic.yafr.loaders.Loaders;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.RssChannelOperation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -121,7 +122,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                 public void onClick(View view) {
                     Timber.d("open add sources fragment/activity");
                     String fragmentTitle = getResources().getString(R.string.save_new_rss_source);
-                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, new RssChannel("", ""));
+                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, null, RssChannelOperation.SAVE, -1);
                     fragment.show(getActivity().getSupportFragmentManager(), "SaveOrEditChannelFragment");
                 }
             });
@@ -132,14 +133,27 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         return fragmentView;
     }
 
-    public void displaySnackbarFor(RssChannel rssChannel) {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_saved, Snackbar.LENGTH_LONG);
+    public void displaySnackbarFor(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
+
+        Snackbar snackbar = null;
+
+        switch (operation) {
+            case SAVE:
+                adapter.addRssChannelToChannelList(rssChannel);
+                snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_saved, Snackbar.LENGTH_LONG);
+                break;
+            case EDIT:
+                adapter.updateRssChannelListAtPosition(rssChannel, clickedItemPosition);
+                snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_edited, Snackbar.LENGTH_LONG);
+                break;
+            default:
+                break;
+        }
+
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundResource(R.color.colorPrimary);
         snackbar.show();
 
-        //add rssChannel to rssChannelList
-        adapter.addRssChannelToChannelList(rssChannel);
     }
 
     @Override

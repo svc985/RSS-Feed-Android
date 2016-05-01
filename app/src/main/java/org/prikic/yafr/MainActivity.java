@@ -17,8 +17,9 @@ import org.prikic.yafr.activities.FavoritesFragment;
 import org.prikic.yafr.activities.FeedsFragment;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
-import org.prikic.yafr.background.SourceSaveAsyncTask;
+import org.prikic.yafr.background.SourceSaveOrUpdateAsyncTask;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.RssChannelOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,13 +127,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRssChannelSaved(RssChannel rssChannel) {
+    public void onRssChannelSaved(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
         Timber.d("saving Rss channel in db...");
 
-        new SourceSaveAsyncTask(rssChannel, this).execute();
+        new SourceSaveOrUpdateAsyncTask(rssChannel, operation, this).execute();
 
         SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
-        sourcesFragment.displaySnackbarFor(rssChannel);
+        sourcesFragment.displaySnackbarFor(rssChannel, operation, clickedItemPosition);
     }
 
     public void enableProgressSpinner(boolean flag) {

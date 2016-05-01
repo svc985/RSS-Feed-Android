@@ -13,5 +13,6 @@
     <string name="save_new_rss_source">Save new RSS channel</string>
     <string name="edit_rss_source">Edit existing RSS channel</string>
     <string name="rss_channel_saved">Rss Channel saved</string>
+    <string name="rss_channel_edited">Rss Channel edited</string>
     <string name="image_view_show_channel_details">Show Rss Channel details</string>
 </resources>

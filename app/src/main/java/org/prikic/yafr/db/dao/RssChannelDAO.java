@@ -94,4 +94,20 @@ public class RssChannelDAO {
         }
         return rssChannels;
     }
+
+    public void updateRssChannel(RssChannel rssChannel) {
+
+        open();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
+        values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
+
+        // Which row to update, based on the ID
+        String selection = RssFeedsContract.ChannelEntry._ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(rssChannel.getId()) };
+
+        database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
+    }
 }

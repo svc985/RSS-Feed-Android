@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.RssChannelOperation;
 
 import timber.log.Timber;
 
@@ -25,7 +26,11 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
     private String fragmentTitle;
 
+    private int clickedItemPosition;
+
     private RssChannel rssChannel;
+
+    private RssChannelOperation operation;
 
     private OnRssChannelSavedListener mListener;
 
@@ -35,6 +40,8 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
         fragmentTitle = getArguments().getString("fragmentTitle", "Error");
         rssChannel = (RssChannel) getArguments().getSerializable("rssChannel");
+        operation = (RssChannelOperation) getArguments().getSerializable("operation");
+        clickedItemPosition = getArguments().getInt("clickedItemPosition");
     }
 
     @NonNull
@@ -78,21 +85,31 @@ public class SaveOrEditChannelFragment extends DialogFragment {
             }
         });
 
-        Button btnSave = (Button) view.findViewById(R.id.btnSaveSourceDialog);
+        final Button btnSave = (Button) view.findViewById(R.id.btnSaveSourceDialog);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Timber.d("notifying SourcesFragment to save Rss channel...");
+                Timber.d("notifying SourcesFragment to save/edit Rss channel...");
 
+                long id = 0;
+                if (operation == RssChannelOperation.EDIT) {
+                    id = rssChannel.getId();
+                }
                 //get channel data from dialog fragment
                 RssChannel rssChannel = getRssChannelData();
-                mListener.onRssChannelSaved(rssChannel);
+
+                if (operation == RssChannelOperation.EDIT) {
+                    rssChannel.setId(id);
+                }
+
+                mListener.onRssChannelSaved(rssChannel, operation, clickedItemPosition);
                 SaveOrEditChannelFragment.this.dismiss();
             }
         });
 
         if (rssChannel != null) {
             editTxtName.setText(rssChannel.getName());
+            editTxtName.setSelection(rssChannel.getName().length());
             editTxtUrl.setText(rssChannel.getUrl());
             btnSave.setText(getResources().getText(R.string.edit));
         }
@@ -116,15 +133,18 @@ public class SaveOrEditChannelFragment extends DialogFragment {
     }
 
     public interface OnRssChannelSavedListener {
-        void onRssChannelSaved(RssChannel rssChannel);
+        void onRssChannelSaved(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition);
     }
 
-    public static SaveOrEditChannelFragment newInstance(String fragmentTitle, RssChannel rssChannel) {
+    public static SaveOrEditChannelFragment newInstance(String fragmentTitle, RssChannel rssChannel,
+                                                        RssChannelOperation operation, int clickedItemPosition) {
         SaveOrEditChannelFragment myFragment = new SaveOrEditChannelFragment();
 
         Bundle args = new Bundle();
         args.putString("fragmentTitle", fragmentTitle);
         args.putSerializable("rssChannel", rssChannel);
+        args.putSerializable("operation", operation);
+        args.putInt("clickedItemPosition", clickedItemPosition);
         myFragment.setArguments(args);
 
         return myFragment;
