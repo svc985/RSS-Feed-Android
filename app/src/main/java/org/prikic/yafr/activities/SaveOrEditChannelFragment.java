@@ -24,23 +24,20 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
     private EditText editTxtName, editTxtUrl;
 
-    private String fragmentTitle;
-
     private int clickedItemPosition;
 
     private RssChannel rssChannel;
 
     private RssChannelOperation operation;
 
-    private OnRssChannelSavedListener mListener;
+    private OnRssChannelOperationListener mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragmentTitle = getArguments().getString("fragmentTitle", "Error");
-        rssChannel = (RssChannel) getArguments().getSerializable("rssChannel");
         operation = (RssChannelOperation) getArguments().getSerializable("operation");
+        rssChannel = (RssChannel) getArguments().getSerializable("rssChannel");
         clickedItemPosition = getArguments().getInt("clickedItemPosition");
     }
 
@@ -59,9 +56,9 @@ public class SaveOrEditChannelFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnRssChannelSavedListener) context;
+            mListener = (OnRssChannelOperationListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement OnRssChannelOperationListener");
         }
     }
 
@@ -72,6 +69,8 @@ public class SaveOrEditChannelFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_create_or_edit_source, container, false);
 
         TextView title = (TextView) view.findViewById(R.id.dialog_create_or_edit_source_title);
+
+        String fragmentTitle = getFragmentTitle();
         title.setText(fragmentTitle);
 
         editTxtName = (EditText) view.findViewById(R.id.dialog_create_or_edit_source_name);
@@ -91,57 +90,50 @@ public class SaveOrEditChannelFragment extends DialogFragment {
             public void onClick(View v) {
                 Timber.d("notifying SourcesFragment to save/edit Rss channel...");
 
-                long id = 0;
-                if (operation == RssChannelOperation.EDIT) {
-                    id = rssChannel.getId();
-                }
-                //get channel data from dialog fragment
-                RssChannel rssChannel = getRssChannelData();
+                rssChannel.setName(editTxtName.getText().toString());
+                rssChannel.setUrl(editTxtUrl.getText().toString());
 
-                if (operation == RssChannelOperation.EDIT) {
-                    rssChannel.setId(id);
+                if (operation == RssChannelOperation.SAVE) {
+                    mListener.onRssChannelSaved(rssChannel);
+                }
+                else {
+                    mListener.onRssChannelEdited(rssChannel, clickedItemPosition);
                 }
 
-                mListener.onRssChannelSaved(rssChannel, operation, clickedItemPosition);
                 SaveOrEditChannelFragment.this.dismiss();
             }
         });
 
-        if (rssChannel != null) {
+        if (operation == RssChannelOperation.EDIT) {
             editTxtName.setText(rssChannel.getName());
-            editTxtName.setSelection(rssChannel.getName().length());
             editTxtUrl.setText(rssChannel.getUrl());
             btnSave.setText(getResources().getText(R.string.edit));
         }
 
         return view;
-
     }
 
-    /**
-     * Gets Rss Channel data, name and url, that user provided as input
-     * and returns it to the caller
-     * @return RssChannel
-     */
-    private RssChannel getRssChannelData() {
+    private String getFragmentTitle() {
 
-        String name = editTxtName.getText().toString();
-        String url = editTxtUrl.getText().toString();
-
-        return new RssChannel(name, url);
-
+        switch (operation) {
+            case SAVE:
+                return getResources().getString(R.string.save_new_rss_source);
+            case EDIT:
+                return getResources().getString(R.string.edit_rss_source);
+            default:
+                return getResources().getString(R.string.lorem_ipsum_short);
+        }
     }
 
-    public interface OnRssChannelSavedListener {
-        void onRssChannelSaved(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition);
+    public interface OnRssChannelOperationListener {
+        void onRssChannelSaved(RssChannel rssChannel);
+        void onRssChannelEdited(RssChannel rssChannel, int clickedItemPosition);
     }
 
-    public static SaveOrEditChannelFragment newInstance(String fragmentTitle, RssChannel rssChannel,
-                                                        RssChannelOperation operation, int clickedItemPosition) {
+    public static SaveOrEditChannelFragment newInstance(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
         SaveOrEditChannelFragment myFragment = new SaveOrEditChannelFragment();
 
         Bundle args = new Bundle();
-        args.putString("fragmentTitle", fragmentTitle);
         args.putSerializable("rssChannel", rssChannel);
         args.putSerializable("operation", operation);
         args.putInt("clickedItemPosition", clickedItemPosition);

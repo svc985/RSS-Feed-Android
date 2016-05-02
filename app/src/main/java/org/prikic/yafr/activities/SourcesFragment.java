@@ -33,44 +33,11 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
     private SourcesAdapter adapter;
 
-    //private GestureDetectorCompat gestureDetector;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getLoaderManager().initLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal(), null, this).forceLoad();
-
-//        gestureDetector = new GestureDetectorCompat(getActivity(), new GestureDetector.OnGestureListener() {
-//            @Override
-//            public boolean onDown(MotionEvent e) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onShowPress(MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public boolean onSingleTapUp(MotionEvent e) {
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//            }
-//
-//            @Override
-//            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -87,33 +54,6 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         adapter = new SourcesAdapter(getActivity(), rssChannelList);
         recyclerView.setAdapter(adapter);
 
-
-        //recycler view item touch listener start
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//           @Override
-//           public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//               View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-//
-//               if(child != null && gestureDetector.onTouchEvent(e)) {
-//                   Timber.d("clicked item at position:%d", recyclerView.getChildAdapterPosition(child));
-//                   //return true;
-//               }
-//               return false;
-//           }
-//
-//           @Override
-//           public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//
-//           }
-//
-//           @Override
-//           public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//           }
-//       });
-
-        //recycler view item touch listener end
-
         FloatingActionButton fab = (FloatingActionButton) fragmentView.findViewById(R.id.btn_add_new_source);
 
         if (fab != null) {
@@ -121,8 +61,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                 @Override
                 public void onClick(View view) {
                     Timber.d("open add sources fragment/activity");
-                    String fragmentTitle = getResources().getString(R.string.save_new_rss_source);
-                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, null, RssChannelOperation.SAVE, -1);
+                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(new RssChannel(), RssChannelOperation.SAVE, -1);
                     fragment.show(getActivity().getSupportFragmentManager(), "SaveOrEditChannelFragment");
                 }
             });
@@ -133,27 +72,23 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         return fragmentView;
     }
 
-    public void displaySnackbarFor(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
+    public void displaySnackbarEditedRssChannel(RssChannel rssChannel, int clickedItemPosition) {
 
-        Snackbar snackbar = null;
-
-        switch (operation) {
-            case SAVE:
-                adapter.addRssChannelToChannelList(rssChannel);
-                snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_saved, Snackbar.LENGTH_LONG);
-                break;
-            case EDIT:
-                adapter.updateRssChannelListAtPosition(rssChannel, clickedItemPosition);
-                snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_edited, Snackbar.LENGTH_LONG);
-                break;
-            default:
-                break;
-        }
-
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_edited, Snackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundResource(R.color.colorPrimary);
         snackbar.show();
+        adapter.updateRssChannelListAtPosition(rssChannel, clickedItemPosition);
 
+    }
+
+    public void displaySnackBarSavedRssChannel(RssChannel rssChannel) {
+
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_saved, Snackbar.LENGTH_LONG);
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundResource(R.color.colorPrimary);
+        snackbar.show();
+        adapter.addRssChannelToChannelList(rssChannel);
     }
 
     @Override

@@ -17,15 +17,12 @@ public class ChannelLoader extends AsyncTaskLoader<List<RssChannel>>{
     public ChannelLoader(Context context) {
         super(context);
         Timber.d("Channel loader - initialized");
-        forceLoad();
-        onContentChanged();
         this.context = context;
     }
 
     @Override
     public List<RssChannel> loadInBackground() {
         Timber.d("Channel loader - loadInBackground");
-        //return Util.getDummyDataset();
         RssChannelDAO rssChannelDAO = new RssChannelDAO(context);
         return rssChannelDAO.getRssChannels();
     }

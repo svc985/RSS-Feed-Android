@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Util {
 
-    public static List<RssChannel> getDummyDataset() {
+    public static List<RssChannel> getDummyRssChannelList() {
 
         List<RssChannel> list = new LinkedList<>();
         list.add(new RssChannel("channel 1", "url 1"));

@@ -17,7 +17,7 @@ import org.prikic.yafr.activities.FavoritesFragment;
 import org.prikic.yafr.activities.FeedsFragment;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
-import org.prikic.yafr.background.SourceSaveOrUpdateAsyncTask;
+import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;
 
@@ -27,7 +27,7 @@ import java.util.List;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
-        implements SaveOrEditChannelFragment.OnRssChannelSavedListener {
+        implements SaveOrEditChannelFragment.OnRssChannelOperationListener {
 
     ViewPagerAdapter viewPagerAdapter;
 
@@ -127,13 +127,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRssChannelSaved(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
+    public void onRssChannelSaved(RssChannel rssChannel) {
         Timber.d("saving Rss channel in db...");
 
-        new SourceSaveOrUpdateAsyncTask(rssChannel, operation, this).execute();
+        new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.SAVE, this).execute();
 
         SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
-        sourcesFragment.displaySnackbarFor(rssChannel, operation, clickedItemPosition);
+        sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
+    }
+
+    @Override
+    public void onRssChannelEdited(RssChannel rssChannel, int clickedItemPosition) {
+        Timber.d("editing Rss channel in db on position %d", clickedItemPosition);
+
+        new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.EDIT, this).execute();
+
+        SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
+        sourcesFragment.displaySnackbarEditedRssChannel(rssChannel, clickedItemPosition);
     }
 
     public void enableProgressSpinner(boolean flag) {

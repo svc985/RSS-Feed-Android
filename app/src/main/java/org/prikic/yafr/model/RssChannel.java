@@ -8,6 +8,9 @@ public class RssChannel implements Serializable{
     private String name;
     private String url;
 
+    public RssChannel() {
+    }
+
     public RssChannel(Long id, String name, String url) {
         this.id = id;
         this.name = name;

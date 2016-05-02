@@ -1,49 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/topLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/txt_source_name"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="start|center_vertical"
+        android:text="@string/lorem_ipsum_short" />
 
-        <TextView
-            android:id="@+id/txt_source_name"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="@string/lorem_ipsum_short"
-            android:gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-
-        <TextView
-            android:id="@+id/txt_source_url"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="@string/lorem_ipsum_short"
-            android:gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_source_url"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/txt_source_name"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="start|center_vertical"
+        android:text="@string/lorem_ipsum_short" />
 
     <ImageView
         android:id="@+id/btn_show_source_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_navigate_next_black_24dp"
-        android:contentDescription="@string/image_view_show_channel_details"
-        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/image_view_show_channel_details"
+        android:src="@mipmap/ic_navigate_next_black_24dp" />
 
     <View
         android:id="@+id/splitter_line"
         android:layout_width="match_parent"
-        android:layout_height= "2dp"
+        android:layout_height="2dp"
         android:background="@color/colorPrimaryDark" />
 
 </RelativeLayout>

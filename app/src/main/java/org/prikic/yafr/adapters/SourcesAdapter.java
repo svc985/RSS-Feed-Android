@@ -67,35 +67,25 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
 
                 int clickedItemPosition = getAdapterPosition();
 
-                Timber.d("open source details for:%s %s", txtSourceName.getText(), txtSourceURL.getText());
+                Timber.d("open source details for:%s %s at position %d", txtSourceName.getText(), txtSourceURL.getText(), clickedItemPosition);
 
-                RssChannel rssChannel = getRssChannelDataFromTextFields();
-                RssChannel rssChannelOld = rssChannelList.get(getAdapterPosition());
-                rssChannel.setId(rssChannelOld.getId());
+                RssChannel rssChannel = rssChannelList.get(clickedItemPosition);
 
                 FragmentActivity activity = SourcesAdapter.this.fragmentActivity;
-                String fragmentTitle = activity.getResources().getString(R.string.edit_rss_source);
-                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(fragmentTitle, rssChannel, RssChannelOperation.EDIT, clickedItemPosition);
+                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(rssChannel, RssChannelOperation.EDIT, clickedItemPosition);
                 fragment.show(activity.getSupportFragmentManager(), "SaveOrEditChannelFragment");
 
             }
-        }
-
-        private RssChannel getRssChannelDataFromTextFields() {
-
-            return new RssChannel(txtSourceName.getText().toString(), txtSourceURL.getText().toString());
         }
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public SourcesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public SourcesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.sources_recycler_view_row, parent, false);
 
-        //TextView textView = (TextView) v.findViewById(R.id.text_view_test_id);
         // set the view's size, margins, paddings and layout parameters
         return new ViewHolder(v);
     }

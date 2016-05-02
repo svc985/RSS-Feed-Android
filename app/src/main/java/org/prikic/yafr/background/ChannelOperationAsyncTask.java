@@ -10,14 +10,14 @@ import org.prikic.yafr.util.RssChannelOperation;
 
 import timber.log.Timber;
 
-public class SourceSaveOrUpdateAsyncTask extends AsyncTask<Void, Void, Long> {
+public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Long> {
 
     RssChannel rssChannel;
     RssChannelDAO rssChannelDAO;
     MainActivity mainActivity;
     RssChannelOperation operation;
 
-    public SourceSaveOrUpdateAsyncTask(RssChannel rssChannel, RssChannelOperation operation, Context context) {
+    public ChannelOperationAsyncTask(RssChannel rssChannel, RssChannelOperation operation, Context context) {
         this.rssChannel = rssChannel;
         this.operation = operation;
         rssChannelDAO = new RssChannelDAO(context);
@@ -36,7 +36,6 @@ public class SourceSaveOrUpdateAsyncTask extends AsyncTask<Void, Void, Long> {
             case SAVE:
                 return rssChannelDAO.saveRssChannel(rssChannel);
             case EDIT:
-                //TODO WIP
                 rssChannelDAO.updateRssChannel(rssChannel);
             default:
                 return -1L;
