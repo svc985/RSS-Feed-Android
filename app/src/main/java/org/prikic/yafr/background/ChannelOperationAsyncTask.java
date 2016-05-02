@@ -8,9 +8,7 @@ import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;
 
-import timber.log.Timber;
-
-public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Long> {
+public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Void> {
 
     RssChannel rssChannel;
     RssChannelDAO rssChannelDAO;
@@ -31,20 +29,26 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Long> {
     }
 
     @Override
-    protected Long doInBackground(Void... params) {
+    protected Void doInBackground(Void... params) {
         switch (operation) {
             case SAVE:
-                return rssChannelDAO.saveRssChannel(rssChannel);
+                rssChannelDAO.saveRssChannel(rssChannel);
+                break;
             case EDIT:
                 rssChannelDAO.updateRssChannel(rssChannel);
+                break;
+            case UPDATE_ACTIVE_FLAG:
+                rssChannelDAO.updateRssChannelActiveFlag(rssChannel);
+                break;
             default:
-                return -1L;
+                break;
         }
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Long channelId) {
-        Timber.d("id of saved channel:%d", channelId);
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
         mainActivity.enableProgressSpinner(false);
     }
 }

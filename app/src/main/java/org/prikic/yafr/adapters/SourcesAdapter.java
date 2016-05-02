@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
+import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;
 
@@ -44,19 +47,22 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
         public TextView txtSourceName, txtSourceURL;
         public ImageView btnShowSourceDetails;
+        public Switch switchChannel;
 
         public ViewHolder(View view) {
             super(view);
             txtSourceName = (TextView) view.findViewById(R.id.txt_source_name);
             txtSourceURL = (TextView) view.findViewById(R.id.txt_source_url);
             btnShowSourceDetails = (ImageView) view.findViewById(R.id.btn_show_source_details);
+            switchChannel = (Switch) view.findViewById(R.id.switchChannel);
 
             btnShowSourceDetails.setOnClickListener(this);
             view.setOnClickListener(this);
+            switchChannel.setOnCheckedChangeListener(this);
             //TODO add long click listener
         }
 
@@ -77,6 +83,15 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
 
             }
         }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int itemPosition = getAdapterPosition();
+            RssChannel rssChannel = rssChannelList.get(itemPosition);
+            Timber.d("%s at position %d is %b", rssChannel, itemPosition, isChecked);
+            rssChannel.setChannelActive(isChecked);
+            new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.UPDATE_ACTIVE_FLAG, fragmentActivity).execute();
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -95,8 +110,10 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.txtSourceName.setText(rssChannelList.get(position).getName());
-        holder.txtSourceURL.setText(rssChannelList.get(position).getUrl());
+        RssChannel rssChannel = rssChannelList.get(position);
+        holder.txtSourceName.setText(rssChannel.getName());
+        holder.txtSourceURL.setText(rssChannel.getUrl());
+        holder.switchChannel.setChecked(rssChannel.isChannelActive());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

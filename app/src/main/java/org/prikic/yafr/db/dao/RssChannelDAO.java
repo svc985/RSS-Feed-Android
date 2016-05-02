@@ -9,9 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import org.prikic.yafr.db.RssFeedsContract;
 import org.prikic.yafr.db.RssFeedsDbHelper;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.DBUtil;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class RssChannelDAO {
 
@@ -19,7 +22,8 @@ public class RssChannelDAO {
     private SQLiteDatabase database;
     private RssFeedsDbHelper rssFeedsDbHelper;
     private String[] allColumns = {RssFeedsContract.ChannelEntry._ID,
-    RssFeedsContract.ChannelEntry.COLUMN_NAME, RssFeedsContract.ChannelEntry.COLUMN_URL};
+    RssFeedsContract.ChannelEntry.COLUMN_NAME, RssFeedsContract.ChannelEntry.COLUMN_URL,
+    RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE};
 
     public RssChannelDAO(Context context) {
         rssFeedsDbHelper = new RssFeedsDbHelper(context);
@@ -41,6 +45,9 @@ public class RssChannelDAO {
         ContentValues values = new ContentValues();
         values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
+        //default for activeRssChannel is true
+        int activeFlag = DBUtil.convertBooleanToInt(rssChannel.isChannelActive());
+        values.put(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE, activeFlag);
 
         //Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -85,7 +92,8 @@ public class RssChannelDAO {
                 long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));
                 String name = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_NAME));
                 String url = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_URL));
-                RssChannel rssChannel = new RssChannel(id, name, url);
+                boolean active = c.getInt(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE))==1;
+                RssChannel rssChannel = new RssChannel(id, name, url, active);
                 rssChannels.add(rssChannel);
             }
         }
@@ -103,6 +111,23 @@ public class RssChannelDAO {
         ContentValues values = new ContentValues();
         values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
+
+        // Which row to update, based on the ID
+        String selection = RssFeedsContract.ChannelEntry._ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(rssChannel.getId()) };
+
+        database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    public void updateRssChannelActiveFlag(RssChannel rssChannel) {
+
+        open();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        int isChannelActive = DBUtil.convertBooleanToInt(rssChannel.isChannelActive());
+        Timber.d("%d", isChannelActive);
+        values.put(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE, isChannelActive);
 
         // Which row to update, based on the ID
         String selection = RssFeedsContract.ChannelEntry._ID + " LIKE ?";
