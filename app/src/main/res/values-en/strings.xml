@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_icon">App Icon</string>
     <string name="about">About</string>
     <string name="worth_mentioning_text">Whatever developer finds worth mentioning</string>
     <string name="source_name">Source Name</string>
     <string name="source_url">Source URL</string>
+
+    <!-- toolbar -->
+    <string name="menu_title_delete">Delete</string>
 </resources>

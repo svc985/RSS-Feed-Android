@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.prikic.yafr.activities.AboutActivity;
 import org.prikic.yafr.activities.FavoritesFragment;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity
 
     private boolean showProgressSpinnerInToolbar = false;
 
+    TextView txtToolbarTitle, txtToolbarCounter;
+    Toolbar toolbar;
+    //private boolean isInChoiceMode = true;
+
     public void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
         this.showProgressSpinnerInToolbar = showProgressSpinnerInToolbar;
     }
@@ -43,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -52,6 +58,9 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null)
         tabLayout.setupWithViewPager(viewPager);
+
+        txtToolbarTitle = (TextView) findViewById(R.id.textview_toolbar_title);
+        txtToolbarCounter = (TextView) findViewById(R.id.textview_toolbar_counter);
 
     }
 
@@ -98,12 +107,13 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem progressSpinner = menu.findItem(R.id.progress_spinner_menu_item);
-        if (!showProgressSpinnerInToolbar) {
-            progressSpinner.setVisible(false);
-        }
-        else {
-            progressSpinner.setVisible(true);
-        }
+        //if (isInChoiceMode) {
+            if (!showProgressSpinnerInToolbar) {
+                progressSpinner.setVisible(false);
+            } else {
+                progressSpinner.setVisible(true);
+            }
+        //}
 
         return true;
     }
@@ -156,4 +166,47 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
     }
 
+    /*shows the action mode toolbar*/
+    public void showActionModeToolbar() {
+        Timber.d("show action mode toolbar");
+        /*show the title (X) and the counter*/
+        txtToolbarCounter.setVisibility(View.VISIBLE);
+        txtToolbarTitle.setVisibility(View.VISIBLE);
+        /*clear the overflow menu*/
+        toolbar.getMenu().clear();
+        /*inflate the action menu*/
+        toolbar.inflateMenu(R.menu.action_mode_menu);
+        /*if you need to use the tag later, set the tag*/
+        toolbar.setTag("actionModeToolbar");
+        /*show the save icon in the toolbar*/
+        MenuItem saveSelectedItemsMenuItem = toolbar.getMenu().findItem(R.id.action_mode_menu_delete);
+        saveSelectedItemsMenuItem.setIcon(R.mipmap.ic_delete_white_24dp);
+    }
+
+    /*show the normal toolbar*/
+    public void showNormalToolbar() {
+        /*set the counter and X text views invisible*/
+        txtToolbarCounter.setVisibility(View.INVISIBLE);
+        txtToolbarTitle.setVisibility(View.INVISIBLE);
+        /*clear the menu*/
+        toolbar.getMenu().clear();
+        /*inflate the overflow menu*/
+        toolbar.inflateMenu(R.menu.menu_main);
+        /*if you need to use the tag later, set the tag*/
+        toolbar.setTag("normalToolbar");
+    }
+
+    /*updates the counter on toolbar to show
+    * how many items have been selected*/
+    public void updateToolbar(int listSize) {
+        //int selectedItemsCounter = selectedItemIdList.size();
+        /*show the title (X) and the counter if there are selected items*/
+        if (listSize > 0) {
+            /*show the text views*/
+            txtToolbarCounter.setVisibility(View.VISIBLE);
+            txtToolbarTitle.setVisibility(View.VISIBLE);
+            /*set the counter*/
+            txtToolbarCounter.setText(String.valueOf(listSize));
+        }
+    }
 }

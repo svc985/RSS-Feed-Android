@@ -61,9 +61,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
             switchChannel = (Switch) view.findViewById(R.id.switchChannel);
 
             btnShowSourceDetails.setOnClickListener(this);
-            view.setOnClickListener(this);
             switchChannel.setOnCheckedChangeListener(this);
-            //TODO add long click listener
         }
 
         @Override

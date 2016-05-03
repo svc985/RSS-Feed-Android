@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_icon">Ikona aplikacije</string>
     <string name="about">O Programu</string>
     <string name="worth_mentioning_text">Šta god programer smatra vrednim pominjanja</string>
     <string name="source_name">Ime RSS kanala</string>
@@ -12,4 +13,7 @@
     <string name="rss_channel_saved">Rss kanal sačuvan</string>
     <string name="rss_channel_edited">Rss kanal editovan</string>
     <string name="image_view_show_channel_details">Prikaži detalje kanala</string>
+
+    <!-- toolbar -->
+    <string name="menu_title_delete">Obriši</string>
 </resources>
