@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.adapters.SourcesAdapter;
+import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.loaders.ChannelLoader;
 import org.prikic.yafr.loaders.Loaders;
 import org.prikic.yafr.model.RssChannel;
@@ -289,4 +290,10 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         }
     }
 
+    protected void deleteSelectedChannels() {
+        Timber.d("delete selected channels...");
+        new ChannelOperationAsyncTask(selectedItemIdList, RssChannelOperation.DELETE, getActivity()).execute();
+        getLoaderManager().getLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal()).onContentChanged();
+        activity.showNormalToolbar();
+    }
 }

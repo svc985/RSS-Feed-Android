@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final Map<String, String> fragmentTags = new HashMap<>();
+        private static final int NUM_OF_FRAGMENTS = 3;
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
-
             switch (position) {
                 case 0:
                     fragmentTags.put(FragmentTitle.FEEDS, createdFragment.getTag());
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return fragmentTags.size();
+            return NUM_OF_FRAGMENTS;
         }
 
         @Override
@@ -168,12 +168,17 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.about_menu_item) {
-            Timber.d("opening about screen...");
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
-            return true;
+        switch (id) {
+            case R.id.about_menu_item:
+                Timber.d("opening about screen...");
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_mode_menu_delete:
+                Timber.d("delete selected channels...");
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                SourcesFragment sourcesFragment = (SourcesFragment) fragmentManager.findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
+                sourcesFragment.deleteSelectedChannels();
         }
 
         return super.onOptionsItemSelected(item);

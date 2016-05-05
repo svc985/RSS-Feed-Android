@@ -4,5 +4,6 @@ public enum RssChannelOperation {
 
     SAVE,
     EDIT,
-    UPDATE_ACTIVE_FLAG
+    UPDATE_ACTIVE_FLAG,
+    DELETE
 }

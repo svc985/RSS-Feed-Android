@@ -128,4 +128,17 @@ public class RssChannelDAO {
 
         database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
     }
+
+    public void deleteRssChannels(List<Long> idsToDeleteList) {
+        open();
+        for (Long l: idsToDeleteList) {
+            Timber.d("delete id:%d", l);
+            // Define 'where' part of query.
+            String selection = RssFeedsContract.ChannelEntry._ID + " LIKE ?";
+            // Specify arguments in placeholder order.
+            String[] selectionArgs = {String.valueOf(l)};
+            // Issue SQL statement.
+            database.delete(RssFeedsContract.ChannelEntry.TABLE_NAME, selection, selectionArgs);
+        }
+    }
 }
