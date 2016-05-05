@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,10 +23,11 @@ import org.prikic.yafr.activities.SaveOrEditChannelFragment;
 import org.prikic.yafr.activities.SourcesFragment;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.FragmentTitle;
 import org.prikic.yafr.util.RssChannelOperation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -69,35 +71,23 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (imageIconActionToolbar.getTag().equals("actionMode")) {
                     Timber.d("return to classic mode...");
-
-                    Fragment fragment = getActiveFragment();
-                    if (fragment instanceof SourcesFragment) {
-                        ((SourcesFragment) fragment).cancelSelections();
-                        showNormalToolbar();
-                    }
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    SourcesFragment sourcesFragment = (SourcesFragment) fragmentManager.findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
+                    sourcesFragment.cancelSelections();
+                    showNormalToolbar();
                 }
             }
         });
     }
 
-    private Fragment getActiveFragment() {
-        int currentFragmentPosition = 0;
-        if (viewPager != null)
-            currentFragmentPosition = viewPager.getCurrentItem();
-        return viewPagerAdapter.getItem(currentFragmentPosition);
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new FeedsFragment(), "Feeds");
-        viewPagerAdapter.addFragment(new FavoritesFragment(), "Favorites");
-        viewPagerAdapter.addFragment(new SourcesFragment(), "Sources");
         viewPager.setAdapter(viewPagerAdapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        private final Map<String, String> fragmentTags = new HashMap<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -105,22 +95,56 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+
+            switch (position) {
+                case 0:
+                    return new FeedsFragment();
+                case 1:
+                    return new FavoritesFragment();
+                case 2:
+                    return new SourcesFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+
+            switch (position) {
+                case 0:
+                    fragmentTags.put(FragmentTitle.FEEDS, createdFragment.getTag());
+                    break;
+                case 1:
+                    fragmentTags.put(FragmentTitle.FAVORITES, createdFragment.getTag());
+                    break;
+                case 2:
+                    fragmentTags.put(FragmentTitle.SOURCES, createdFragment.getTag());
+                    break;
+                default:
+                    break;
+            }
+            return createdFragment;
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
+            return fragmentTags.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+            switch (position) {
+                case 0:
+                    return FragmentTitle.FEEDS;
+                case 1:
+                    return FragmentTitle.FAVORITES;
+                case 2:
+                    return FragmentTitle.SOURCES;
+                default:
+                    return "";
+            }
         }
     }
 
@@ -165,8 +189,7 @@ public class MainActivity extends AppCompatActivity
 
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.SAVE, this).execute();
 
-        //TODO fixing??
-        SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
+        SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
         sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
     }
 
@@ -176,7 +199,7 @@ public class MainActivity extends AppCompatActivity
 
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.EDIT, this).execute();
 
-        SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
+        SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
         sourcesFragment.displaySnackbarEditedRssChannel(rssChannel, clickedItemPosition);
     }
 
