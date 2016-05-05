@@ -18,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.prikic.yafr.MainActivity;
 import org.prikic.yafr.R;
 import org.prikic.yafr.adapters.SourcesAdapter;
 import org.prikic.yafr.loaders.ChannelLoader;

@@ -1,4 +1,4 @@
-package org.prikic.yafr;
+package org.prikic.yafr.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.prikic.yafr.activities.AboutActivity;
-import org.prikic.yafr.activities.FavoritesFragment;
-import org.prikic.yafr.activities.FeedsFragment;
-import org.prikic.yafr.activities.SaveOrEditChannelFragment;
-import org.prikic.yafr.activities.SourcesFragment;
+import org.prikic.yafr.R;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.FragmentTitle;
