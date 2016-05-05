@@ -116,6 +116,16 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         adapter.addRssChannelToChannelList(rssChannel);
     }
 
+    /*cancel any selections*/
+    public void cancelSelections() {
+        isInChoiceMode = false;
+        /*empty the list of selected ids*/
+        selectedItemIdList.clear();
+        /*notify adapter so we can reset the item display to normal
+        * -LayoutManagers will be forced to fully rebind and relayout all visible views*/
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public ChannelLoader onCreateLoader(int id, Bundle args) {
         Timber.d("onCreate Loader - load rss channels");
@@ -127,7 +137,6 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         Timber.d("load finished for loading rss channels, with size:%d", data.size());
         rssChannelList = data;
         adapter.setRssChannelList(data);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -201,13 +210,19 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                     * -long press will only work if not in choice mode*/
                     Timber.d("on long press detected");
 
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+                    if (child == null) {
+                        return;
+                    }
+
                     if (!isInChoiceMode) {
                         /*we're now in choice mode*/
                         isInChoiceMode = true;
                         /*show the action mode toolbar*/
                         activity.showActionModeToolbar();
                          /*get the selected view*/
-                        View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
                         /*add haptic feedback*/
                         child.setHapticFeedbackEnabled(true);
                         child.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
@@ -241,7 +256,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                 Iterator<Long> i = selectedItemIdList.iterator();
                 while (i.hasNext()) {
                     Long listItemId = i.next();
-                    if (listItemId == itemId) {
+                    if (listItemId.equals(itemId)) {
                         i.remove();
                     }
                 }

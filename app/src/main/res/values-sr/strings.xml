@@ -13,6 +13,7 @@
     <string name="rss_channel_saved">Rss kanal sačuvan</string>
     <string name="rss_channel_edited">Rss kanal editovan</string>
     <string name="image_view_show_channel_details">Prikaži detalje kanala</string>
+    <string name="row_selection">Selekcija reda</string>
 
     <!-- toolbar -->
     <string name="menu_title_delete">Obriši</string>

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.prikic.yafr.activities.AboutActivity;
@@ -31,13 +32,14 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity
         implements SaveOrEditChannelFragment.OnRssChannelOperationListener {
 
+    ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
 
     private boolean showProgressSpinnerInToolbar = false;
 
-    TextView txtToolbarTitle, txtToolbarCounter;
+    TextView txtToolbarCounter;
     Toolbar toolbar;
-    //private boolean isInChoiceMode = true;
+    ImageView imageIconActionToolbar;
 
     public void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
         this.showProgressSpinnerInToolbar = showProgressSpinnerInToolbar;
@@ -52,16 +54,37 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null)
-        tabLayout.setupWithViewPager(viewPager);
+            tabLayout.setupWithViewPager(viewPager);
 
-        txtToolbarTitle = (TextView) findViewById(R.id.textview_toolbar_title);
         txtToolbarCounter = (TextView) findViewById(R.id.textview_toolbar_counter);
+        imageIconActionToolbar = (ImageView) findViewById(R.id.imageIconActionToolbar);
 
+        imageIconActionToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageIconActionToolbar.getTag().equals("actionMode")) {
+                    Timber.d("return to classic mode...");
+
+                    Fragment fragment = getActiveFragment();
+                    if (fragment instanceof SourcesFragment) {
+                        ((SourcesFragment) fragment).cancelSelections();
+                        showNormalToolbar();
+                    }
+                }
+            }
+        });
+    }
+
+    private Fragment getActiveFragment() {
+        int currentFragmentPosition = 0;
+        if (viewPager != null)
+            currentFragmentPosition = viewPager.getCurrentItem();
+        return viewPagerAdapter.getItem(currentFragmentPosition);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -142,6 +165,7 @@ public class MainActivity extends AppCompatActivity
 
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.SAVE, this).execute();
 
+        //TODO fixing??
         SourcesFragment sourcesFragment = (SourcesFragment) viewPagerAdapter.mFragmentList.get(2);
         sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
     }
@@ -171,7 +195,8 @@ public class MainActivity extends AppCompatActivity
         Timber.d("show action mode toolbar");
         /*show the title (X) and the counter*/
         txtToolbarCounter.setVisibility(View.VISIBLE);
-        txtToolbarTitle.setVisibility(View.VISIBLE);
+        imageIconActionToolbar.setImageResource(R.mipmap.ic_arrow_back_white_24dp);
+        imageIconActionToolbar.setTag("actionMode");
         /*clear the overflow menu*/
         toolbar.getMenu().clear();
         /*inflate the action menu*/
@@ -186,14 +211,20 @@ public class MainActivity extends AppCompatActivity
     /*show the normal toolbar*/
     public void showNormalToolbar() {
         /*set the counter and X text views invisible*/
-        txtToolbarCounter.setVisibility(View.INVISIBLE);
-        txtToolbarTitle.setVisibility(View.INVISIBLE);
+        //txtToolbarCounter.setVisibility(View.INVISIBLE);
+        txtToolbarCounter.setText(getResources().getString(R.string.app_name));
+        //txtToolbarTitle.setVisibility(View.INVISIBLE);
+        imageIconActionToolbar.setImageResource(R.mipmap.ic_launcher);
+        imageIconActionToolbar.setTag("classicMode");
         /*clear the menu*/
         toolbar.getMenu().clear();
         /*inflate the overflow menu*/
         toolbar.inflateMenu(R.menu.menu_main);
         /*if you need to use the tag later, set the tag*/
         toolbar.setTag("normalToolbar");
+
+        //TODO progress spinner should be fixed, here it just remains hidden
+        enableProgressSpinner(false);
     }
 
     /*updates the counter on toolbar to show
@@ -204,7 +235,7 @@ public class MainActivity extends AppCompatActivity
         if (listSize > 0) {
             /*show the text views*/
             txtToolbarCounter.setVisibility(View.VISIBLE);
-            txtToolbarTitle.setVisibility(View.VISIBLE);
+            //txtToolbarTitle.setVisibility(View.VISIBLE);
             /*set the counter*/
             txtToolbarCounter.setText(String.valueOf(listSize));
         }

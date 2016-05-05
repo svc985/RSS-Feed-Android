@@ -16,6 +16,7 @@
     <string name="rss_channel_saved">Rss Channel saved</string>
     <string name="rss_channel_edited">Rss Channel edited</string>
     <string name="image_view_show_channel_details">Show Rss Channel details</string>
+    <string name="row_selection">Row selection</string>
 
     <!-- toolbar -->
     <string name="menu_title_delete">Delete</string>

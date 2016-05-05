@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.SaveOrEditChannelFragment;
+import org.prikic.yafr.activities.SourcesFragment;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;
@@ -32,6 +34,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
 
     public void setRssChannelList(List<RssChannel> rssChannelList) {
         this.rssChannelList = rssChannelList;
+        notifyDataSetChanged();
     }
 
     public void addRssChannelToChannelList(RssChannel rssChannel) {
@@ -52,6 +55,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
         public TextView txtSourceName, txtSourceURL;
         public ImageView btnShowSourceDetails;
         public Switch switchChannel;
+        public ImageButton rowSelection;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,6 +63,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
             txtSourceURL = (TextView) view.findViewById(R.id.txt_source_url);
             btnShowSourceDetails = (ImageView) view.findViewById(R.id.btn_show_source_details);
             switchChannel = (Switch) view.findViewById(R.id.switchChannel);
+            rowSelection = (ImageButton) view.findViewById(R.id.img_btn_row_selection);
 
             btnShowSourceDetails.setOnClickListener(this);
             switchChannel.setOnCheckedChangeListener(this);
@@ -112,6 +117,64 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
         holder.txtSourceName.setText(rssChannel.getName());
         holder.txtSourceURL.setText(rssChannel.getUrl());
         holder.switchChannel.setChecked(rssChannel.isChannelActive());
+
+        /*un select all items by default*/
+        setItemUnSelected(holder);
+
+        /*change the colour if the itemTextView is selected
+        * -first check if selected list exists and has at least 1 item*/
+        if (SourcesFragment.selectedItemIdList != null
+                && SourcesFragment.selectedItemIdList.size() > 0) {
+            /*we are now in choice mode, so make the user aware
+            of this by displaying additional view for row_selected/row_not_selected image (*) */
+            setViewIndicatingChoiceMode(holder);
+            /*check if the view we're about to display is in the selected list*/
+            boolean isItemIdInList
+                    = isItemIdInSelectedList(rssChannelList.get(position).getId());
+            if (isItemIdInList) {
+                /*this item is selected so change the row_not_selected
+                to indicate that it's selected*/
+                setItemSelected(holder);
+            }
+        } else {
+            /*we are now in normal mode so make the user aware of
+            this by removing the additional view at the row beginning*/
+            setViewIndicatingNormalMode(holder);
+        }
+    }
+
+    /*indicate to user that they are in choice mode*/
+    private void setViewIndicatingChoiceMode(ViewHolder holder) {
+        /*show the row for action mode*/
+        holder.rowSelection.setVisibility(View.VISIBLE);
+        holder.switchChannel.setVisibility(View.GONE);
+        holder.btnShowSourceDetails.setVisibility(View.GONE);
+    }
+
+    /*indicate to user that they are in normal mode now*/
+    private void setViewIndicatingNormalMode(ViewHolder holder) {
+        /*hide the row for action mode*/
+        holder.rowSelection.setVisibility(View.GONE);
+        holder.switchChannel.setVisibility(View.VISIBLE);
+        holder.btnShowSourceDetails.setVisibility(View.VISIBLE);
+    }
+
+    /*set the item to not_selected*/
+    private void setItemUnSelected(ViewHolder holder) {
+        /*set rowSelection to not selected*/
+        holder.rowSelection.setImageResource(R.drawable.row_not_selected);
+    }
+
+    /*set the item to selected*/
+    private void setItemSelected(ViewHolder holder) {
+        /*set rowSelection to selected*/
+        holder.rowSelection.setImageResource(R.drawable.row_selected);
+
+    }
+
+    /*check if the given id is in the list of selected ids*/
+    private boolean isItemIdInSelectedList(Long itemId) {
+        return SourcesFragment.selectedItemIdList.contains(itemId);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

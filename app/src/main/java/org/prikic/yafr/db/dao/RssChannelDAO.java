@@ -62,13 +62,6 @@ public class RssChannelDAO {
 
     public List<RssChannel> getRssChannels() {
 
-        //TODO test
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         List<RssChannel> rssChannels = new LinkedList<>();
 
         SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
