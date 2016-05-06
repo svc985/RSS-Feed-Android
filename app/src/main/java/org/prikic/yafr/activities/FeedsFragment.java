@@ -2,11 +2,17 @@ package org.prikic.yafr.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.prikic.yafr.R;
+import org.prikic.yafr.adapters.FeedsAdapter;
+import org.prikic.yafr.util.Util;
+
+import java.util.List;
 
 public class FeedsFragment extends Fragment {
 
@@ -22,6 +28,19 @@ public class FeedsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.test_layout, container, false);
+        View fragmentView = inflater.inflate(R.layout.feeds, container, false);
+
+        final RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view_feeds_fragment);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //TODO test list
+        List<Object> rssFeedsList = Util.getDummyList();
+
+        //recycler view adapter
+        RecyclerView.Adapter adapter = new FeedsAdapter(getActivity(), rssFeedsList);
+        recyclerView.setAdapter(adapter);
+
+        return fragmentView;
     }
 }
