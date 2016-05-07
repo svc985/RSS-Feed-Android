@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
+import org.prikic.yafr.background.FetchFeedsService;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.FragmentTitle;
 import org.prikic.yafr.util.RssChannelOperation;
@@ -74,6 +75,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        //start service for fetching feeds
+        Intent intent = new Intent(this, FetchFeedsService.class);
+        startService(intent);
     }
 
     private void setupViewPager(ViewPager viewPager) {

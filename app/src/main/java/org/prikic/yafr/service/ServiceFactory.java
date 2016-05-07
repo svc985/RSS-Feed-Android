@@ -44,12 +44,13 @@ public final class ServiceFactory {
         return client;
     }
 
-    private static XmlProviderService buildService() {
+    public static XmlProviderService buildService() {
 
         Retrofit.Builder builder =
                 new Retrofit.Builder()
+                        .baseUrl("http://www.b92.net/info/rss/tehnopolis.xml/")
                         .client(ServiceFactory.getInstance().getClient())
-                .addConverterFactory(SimpleXmlConverterFactory.create());
+                        .addConverterFactory(SimpleXmlConverterFactory.create());
 
         Retrofit retrofit = builder.build();
         return retrofit.create(XmlProviderService.class);

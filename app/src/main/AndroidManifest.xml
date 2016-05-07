@@ -28,6 +28,8 @@
             android:parentActivityName=".activities.MainActivity">
         </activity>
 
+        <service android:name=".background.FetchFeedsService"/>
+
     </application>
 
 </manifest>
