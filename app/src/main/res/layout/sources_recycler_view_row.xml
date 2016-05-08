@@ -1,64 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/img_btn_row_selection"
-        android:src="@drawable/row_not_selected"
-        android:contentDescription="@string/row_selection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/layoutMargin_10"
-        android:layout_marginStart="@dimen/layoutMargin_10"
-        android:background="@null"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/txt_source_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_toRightOf="@id/img_btn_row_selection"
-        android:layout_toEndOf="@id/img_btn_row_selection"
-        android:layout_marginLeft="@dimen/layoutMargin_10"
-        android:layout_marginStart="@dimen/layoutMargin_10"
-        android:gravity="start|bottom"
-        android:text="@string/lorem_ipsum_short"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/txt_source_url"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_toRightOf="@id/img_btn_row_selection"
-        android:layout_toEndOf="@id/img_btn_row_selection"
-        android:layout_marginLeft="@dimen/layoutMargin_10"
-        android:layout_marginStart="@dimen/layoutMargin_10"
-        android:layout_below="@+id/txt_source_name"
-        android:gravity="start|top"
-        android:text="@string/lorem_ipsum_short" />
-
-    <Switch
-        android:id="@+id/switchChannel"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_toLeftOf="@+id/btn_show_source_details"
-        android:layout_toStartOf="@+id/btn_show_source_details"
-        android:checked="true"/>
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/btn_show_source_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/image_view_show_channel_details"
-        android:src="@mipmap/ic_navigate_next_black_24dp" />
+        <ImageButton
+            android:id="@+id/img_btn_row_selection"
+            android:src="@drawable/row_not_selected"
+            android:contentDescription="@string/row_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/layoutMargin_10"
+            android:layout_marginStart="@dimen/layoutMargin_10"
+            android:background="@null"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_source_name"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/layoutMargin_10"
+                android:layout_marginStart="@dimen/layoutMargin_10"
+                android:gravity="start|bottom"
+                android:text="@string/lorem_ipsum_short"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txt_source_url"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/layoutMargin_10"
+                android:layout_marginStart="@dimen/layoutMargin_10"
+                android:gravity="start|top"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/lorem_ipsum_short" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/non_textual_components"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical">
+
+            <Switch
+                android:id="@+id/switchChannel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:checked="true"/>
+
+            <ImageView
+                android:id="@+id/btn_show_source_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image_view_show_channel_details"
+                android:src="@mipmap/ic_navigate_next_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:id="@+id/splitter_line"
@@ -66,4 +80,4 @@
         android:layout_height="2dp"
         android:background="@color/colorPrimaryDark" />
 
-</RelativeLayout>
+</LinearLayout>

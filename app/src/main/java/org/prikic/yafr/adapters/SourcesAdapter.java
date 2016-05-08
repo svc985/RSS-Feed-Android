@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
         public ImageView btnShowSourceDetails;
         public Switch switchChannel;
         public ImageButton rowSelection;
+        public LinearLayout nonTextualComponents;
 
         public ViewHolder(View view) {
             super(view);
@@ -64,6 +66,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
             btnShowSourceDetails = (ImageView) view.findViewById(R.id.btn_show_source_details);
             switchChannel = (Switch) view.findViewById(R.id.switchChannel);
             rowSelection = (ImageButton) view.findViewById(R.id.img_btn_row_selection);
+            nonTextualComponents = (LinearLayout) view.findViewById(R.id.non_textual_components);
 
             btnShowSourceDetails.setOnClickListener(this);
             switchChannel.setOnCheckedChangeListener(this);
@@ -147,16 +150,14 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
     private void setViewIndicatingChoiceMode(ViewHolder holder) {
         /*show the row for action mode*/
         holder.rowSelection.setVisibility(View.VISIBLE);
-        holder.switchChannel.setVisibility(View.GONE);
-        holder.btnShowSourceDetails.setVisibility(View.GONE);
+        holder.nonTextualComponents.setVisibility(View.GONE);
     }
 
     /*indicate to user that they are in normal mode now*/
     private void setViewIndicatingNormalMode(ViewHolder holder) {
         /*hide the row for action mode*/
         holder.rowSelection.setVisibility(View.GONE);
-        holder.switchChannel.setVisibility(View.VISIBLE);
-        holder.btnShowSourceDetails.setVisibility(View.VISIBLE);
+        holder.nonTextualComponents.setVisibility(View.VISIBLE);
     }
 
     /*set the item to not_selected*/

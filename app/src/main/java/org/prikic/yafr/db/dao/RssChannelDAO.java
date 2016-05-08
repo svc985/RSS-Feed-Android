@@ -66,7 +66,7 @@ public class RssChannelDAO {
 
         SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
 
-// How you want the results sorted in the resulting Cursor
+        // How you want the results sorted in the resulting Cursor
         String sortOrder =
                 RssFeedsContract.ChannelEntry.COLUMN_NAME + " ASC";
 
@@ -140,5 +140,40 @@ public class RssChannelDAO {
             // Issue SQL statement.
             database.delete(RssFeedsContract.ChannelEntry.TABLE_NAME, selection, selectionArgs);
         }
+    }
+
+    public List<RssChannel> getActiveRssChannels() {
+        List<RssChannel> activeRssChannels = new LinkedList<>();
+
+        SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                RssFeedsContract.ChannelEntry.COLUMN_NAME + " ASC";
+
+        Cursor c = db.query(
+                RssFeedsContract.ChannelEntry.TABLE_NAME,  // The table to query
+                allColumns,                               // The columns to return
+                RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE + "=?",                                // The columns for the WHERE clause
+                new String[] {"1"},                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        try {
+            while (c.moveToNext()) {
+                long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));
+                String name = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_NAME));
+                String url = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_URL));
+                boolean active = c.getInt(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE))==1;
+                RssChannel rssChannel = new RssChannel(id, name, url, active);
+                activeRssChannels.add(rssChannel);
+            }
+        }
+        finally {
+            c.close();
+        }
+        return activeRssChannels;
     }
 }
