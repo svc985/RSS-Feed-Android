@@ -32,15 +32,17 @@ public class FetchFeedsService extends IntentService {
 
         //TODO replace hardcoded value
         for(RssChannel rssChannel : rssChannels) {
-            //String testUrl = rssChannels.get(0).getUrl();
+            //String url = "http://sport.blic.rs/rss/danasnje-vesti";
             String url = rssChannel.getUrl();
-            Call<Feed> feed = ServiceFactory.buildService().getFeeds(url);
-            //Call<Feed> feed = ServiceFactory.buildService().getFeeds("http://www.blic.rs/rss/Komentar/Sport");
+            Call<Feed> fetchFeeds = ServiceFactory.buildService().getFeeds(url);
             Timber.d("test URL is:%s", url);
 
             try {
-                Response<Feed> feedResponse = feed.execute();
-                Timber.d("feedResponse:%d", feedResponse.body().getmChannel().getFeedItems().size());
+                Response<Feed> feedResponse = fetchFeeds.execute();
+                Feed feed = feedResponse.body();
+                Timber.d("%d", feedResponse.code());
+                if (feed.getChannel().getFeedItems() != null)
+                    Timber.d("feedResponse:%d", feed.getChannel().getFeedItems().size());
             } catch (IOException e) {
                 Timber.e(e.getMessage());
             }

@@ -8,53 +8,53 @@ import java.io.Serializable;
 @Root(name = "item", strict = false)
 public class FeedItem implements Serializable {
     @Element(name = "pubDate")
-    private String mpubDate;
+    private String pubDate;
     @Element(name = "title")
-    private String mtitle;
+    private String title;
     @Element(name = "link")
-    private String mlink;
+    private String link;
     @Element(name = "description")
-    private String mdescription;
+    private String description;
 
     public FeedItem() {
     }
 
-    public FeedItem(String mdescription, String mlink, String mtitle, String mpubDate) {
-        this.mdescription = mdescription;
-        this.mlink = mlink;
-        this.mtitle = mtitle;
-        this.mpubDate = mpubDate;
+    public FeedItem(String description, String link, String title, String pubDate) {
+        this.description = description;
+        this.link = link;
+        this.title = title;
+        this.pubDate = pubDate;
     }
 
-    public String getMpubDate() {
-        return mpubDate;
+    public String getPubDate() {
+        return pubDate;
     }
 
-    public void setMpubDate(String mpubDate) {
-        this.mpubDate = mpubDate;
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
     }
 
-    public String getMtitle() {
-        return mtitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMtitle(String mtitle) {
-        this.mtitle = mtitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getMlink() {
-        return mlink;
+    public String getLink() {
+        return link;
     }
 
-    public void setMlink(String mlink) {
-        this.mlink = mlink;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public String getMdescription() {
-        return mdescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setMdescription(String mdescription) {
-        this.mdescription = mdescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
