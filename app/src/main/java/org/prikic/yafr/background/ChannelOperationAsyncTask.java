@@ -1,16 +1,19 @@
 package org.prikic.yafr.background;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 
 import org.prikic.yafr.activities.MainActivity;
 import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.RssChannelOperation;
 
 import java.util.List;
 
-public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Void> {
+public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel> {
 
     Object object;
     RssChannelDAO rssChannelDAO;
@@ -31,12 +34,13 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected RssChannel doInBackground(Void... params) {
         switch (operation) {
             case SAVE:
                 RssChannel rssChannel1 = (RssChannel) object;
-                rssChannelDAO.saveRssChannel(rssChannel1);
-                break;
+                Long id = rssChannelDAO.saveRssChannel(rssChannel1);
+                rssChannel1.setId(id);
+                return rssChannel1;
             case EDIT:
                 RssChannel rssChannel2 = (RssChannel) object;
                 rssChannelDAO.updateRssChannel(rssChannel2);
@@ -56,8 +60,18 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(RssChannel rssChannel) {
+        super.onPostExecute(rssChannel);
         mainActivity.enableProgressSpinner(false);
+
+        if ( operation == RssChannelOperation.SAVE) {
+            //TODO channel is saved - send local broadcast
+            Intent localIntent = new Intent(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
+
+            // Puts the rssChannel into the Intent
+            localIntent.putExtra(Constants.EXTENDED_DATA_RSS_CHANNEL, rssChannel);
+            // Broadcasts the Intent to receivers in this app.
+            LocalBroadcastManager.getInstance(mainActivity).sendBroadcast(localIntent);
+        }
     }
 }

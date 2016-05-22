@@ -1,11 +1,15 @@
 package org.prikic.yafr.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +24,7 @@ import org.prikic.yafr.R;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.background.FetchFeedsService;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.FragmentTitle;
 import org.prikic.yafr.util.RssChannelOperation;
 
@@ -79,6 +84,17 @@ public class MainActivity extends AppCompatActivity
         //start service for fetching feeds
         Intent intent = new Intent(this, FetchFeedsService.class);
         startService(intent);
+
+        // The filter's action is BROADCAST_ACTION_RSS_CHANNEL_SAVED
+        IntentFilter mStatusIntentFilter = new IntentFilter(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
+
+        // Instantiates a new ResponseReceiver
+        ResponseReceiver responseReceiver = new ResponseReceiver();
+        // Registers the ResponseReceiver and its intent filters
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                responseReceiver,
+                mStatusIntentFilter);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -184,6 +200,7 @@ public class MainActivity extends AppCompatActivity
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 SourcesFragment sourcesFragment = (SourcesFragment) fragmentManager.findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
                 sourcesFragment.deleteSelectedChannels();
+                sourcesFragment.cancelSelections();
         }
 
         return super.onOptionsItemSelected(item);
@@ -195,8 +212,6 @@ public class MainActivity extends AppCompatActivity
 
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.SAVE, this).execute();
 
-        SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
-        sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
     }
 
     @Override
@@ -267,6 +282,27 @@ public class MainActivity extends AppCompatActivity
             //txtToolbarTitle.setVisibility(View.VISIBLE);
             /*set the counter*/
             txtToolbarCounter.setText(String.valueOf(listSize));
+        }
+    }
+
+    // Broadcast receiver for receiving updates from the IntentService
+    private class ResponseReceiver extends BroadcastReceiver {
+        // Prevents instantiation
+        private ResponseReceiver() {
+        }
+        // Called when the BroadcastReceiver gets an Intent it's registered to receive
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        /*
+         * Handle Intents here.
+         */
+            Timber.d("on receive...");
+            Bundle bundle = intent.getExtras();
+            RssChannel rssChannel = (RssChannel) bundle.getSerializable(Constants.EXTENDED_DATA_RSS_CHANNEL);
+
+            SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
+            sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
         }
     }
 }
