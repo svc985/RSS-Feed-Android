@@ -13,8 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import org.prikic.yafr.R;
-import org.prikic.yafr.screens.SaveOrEditChannelFragment;
-import org.prikic.yafr.screens.SourcesFragment;
+import org.prikic.yafr.activities.SaveOrEditChannelFragment;
+import org.prikic.yafr.activities.SourcesFragment;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;

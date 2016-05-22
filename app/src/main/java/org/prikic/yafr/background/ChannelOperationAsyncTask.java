@@ -3,7 +3,7 @@ package org.prikic.yafr.background;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.prikic.yafr.screens.MainActivity;
+import org.prikic.yafr.activities.MainActivity;
 import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.RssChannelOperation;
