@@ -1,4 +1,4 @@
-package org.prikic.yafr.activities;
+package org.prikic.yafr.screens;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
