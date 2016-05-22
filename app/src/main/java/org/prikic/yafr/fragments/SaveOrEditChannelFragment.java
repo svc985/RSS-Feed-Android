@@ -1,4 +1,4 @@
-package org.prikic.yafr.activities;
+package org.prikic.yafr.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
