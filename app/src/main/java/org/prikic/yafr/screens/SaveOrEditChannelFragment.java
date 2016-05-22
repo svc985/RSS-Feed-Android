@@ -92,10 +92,10 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
                 rssChannel.setName(editTxtName.getText().toString());
                 rssChannel.setUrl(editTxtUrl.getText().toString());
+                //default for isChannelActive is true
+                rssChannel.setChannelActive(true);
 
                 if (operation == RssChannelOperation.SAVE) {
-                    //default for isChannelActive is true
-                    rssChannel.setChannelActive(true);
                     mListener.onRssChannelSaved(rssChannel);
                 }
                 else {

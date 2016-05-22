@@ -98,7 +98,6 @@ public class RssChannelDAO {
 
     public void updateRssChannel(RssChannel rssChannel) {
 
-        Timber.d("updated:%s", rssChannel);
         open();
 
         // New value for one column
@@ -120,7 +119,7 @@ public class RssChannelDAO {
         // New value for one column
         ContentValues values = new ContentValues();
         int isChannelActive = DBUtil.convertBooleanToInt(rssChannel.isChannelActive());
-        Timber.d("is channel active:%d", isChannelActive);
+        Timber.d("%d", isChannelActive);
         values.put(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE, isChannelActive);
 
         // Which row to update, based on the ID

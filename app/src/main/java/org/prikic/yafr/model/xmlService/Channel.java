@@ -9,16 +9,16 @@ import java.util.List;
 @Root(name = "channel", strict = false)
 public class Channel implements Serializable {
     @ElementList(inline = true, name="item")
-    private List<FeedItem> feedItems;
+    private List<FeedItem> mFeedItems;
 
     public List<FeedItem> getFeedItems() {
-        return feedItems;
+        return mFeedItems;
     }
 
     public Channel() {
     }
 
-    public Channel(List<FeedItem> feedItems) {
-        this.feedItems = feedItems;
+    public Channel(List<FeedItem> mFeedItems) {
+        this.mFeedItems = mFeedItems;
     }
 }

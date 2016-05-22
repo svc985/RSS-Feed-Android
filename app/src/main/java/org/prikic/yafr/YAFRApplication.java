@@ -11,12 +11,7 @@ public class YAFRApplication extends Application {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree() {
-                @Override
-                protected String createStackElementTag(StackTraceElement element) {
-                    return super.createStackElementTag(element) + ":" + element.getLineNumber();
-                }
-            });
+            Timber.plant(new Timber.DebugTree());
         }
     }
 }
