@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.prikic.yafr.R;
 import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Constants;
+import org.prikic.yafr.util.Util;
 
 import timber.log.Timber;
 
@@ -22,6 +23,7 @@ public class FeedDetailsActivity extends AppCompatActivity {
 
         TextView feedDetailsTitle = (TextView) findViewById(R.id.feed_details_title);
         TextView feedDetailsDescription = (TextView) findViewById(R.id.feed_details_description);
+        TextView feedDetailsPubDate = (TextView) findViewById(R.id.feed_details_published_pub_date);
 
         Timber.d("opening Feed details");
 
@@ -34,6 +36,8 @@ public class FeedDetailsActivity extends AppCompatActivity {
             webView.loadUrl(feedItem.getLink());
             feedDetailsTitle.setText(feedItem.getTitle());
             feedDetailsDescription.setText(feedItem.getDescription());
+            String pubDate = Util.parseDate(feedItem.getPubDate());
+            feedDetailsPubDate.setText(pubDate);
         }
 
     }

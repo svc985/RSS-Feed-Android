@@ -10,11 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import timber.log.Timber;
-
 public class Util {
-
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.US);
 
     public static List<Object> getDummyList() {
 
@@ -36,17 +32,22 @@ public class Util {
 
     public static String parseDate(String pubDate) {
 
-        SimpleDateFormat dt = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US);
-        Date date = null;
-        try {
-            date = dt.parse(pubDate);
-        } catch (ParseException e) {
-            Timber.e(e.getMessage());
-        }
+        List<SimpleDateFormat> knownPatterns = new ArrayList<>();
+        knownPatterns.add(new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US));
+        knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US));
 
-        // *** same for the format String below
-        SimpleDateFormat dt1 = new SimpleDateFormat("dd MM yyyy - HH:mm", Locale.US);
-        return dt1.format(date);
+        for (SimpleDateFormat pattern : knownPatterns) {
+            try {
+                // Take a try
+                Date date = pattern.parse(pubDate);
+                SimpleDateFormat dt1 = new SimpleDateFormat("dd MM yyyy - HH:mm", Locale.US);
+                return dt1.format(date);
+
+            } catch (ParseException pe) {
+                // Loop on
+            }
+        }
+        return "";
 
     }
 }
