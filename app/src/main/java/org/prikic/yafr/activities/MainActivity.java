@@ -317,7 +317,9 @@ public class MainActivity extends AppCompatActivity
                 case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {
                     Bundle bundle = intent.getExtras();
                     ArrayList feedItems = (ArrayList<FeedItem>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
-                    Timber.d("size of fetched list of feeditems:%d",feedItems.size());
+                    Timber.d("size of fetched list of feeditems:%d, notifying FeedsFragment...",feedItems.size());
+                    FeedsFragment feedsFragment = (FeedsFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.FEEDS));
+                    feedsFragment.updateFeedItemsList(feedItems);
                 }
             }
         }

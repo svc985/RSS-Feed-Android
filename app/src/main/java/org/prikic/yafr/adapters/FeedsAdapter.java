@@ -27,13 +27,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtTitle, txtDescription;
+        public TextView txtTitle, txtPubDate;
 
         public ViewHolder(View view) {
             super(view);
 
             txtTitle = (TextView) view.findViewById(R.id.txt_title);
-            txtDescription = (TextView) view.findViewById(R.id.txt_description);
+            txtPubDate = (TextView) view.findViewById(R.id.txt_pub_date);
         }
     }
 
@@ -52,7 +52,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
 
         FeedItem feedItem = rssFeedsList.get(position);
         holder.txtTitle.setText(feedItem.getTitle());
-        holder.txtDescription.setText(feedItem.getDescription());
+        holder.txtPubDate.setText(feedItem.getPubDate());
 
     }
 

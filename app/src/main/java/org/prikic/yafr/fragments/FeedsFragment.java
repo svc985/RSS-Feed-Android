@@ -13,9 +13,14 @@ import org.prikic.yafr.adapters.FeedsAdapter;
 import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FeedsFragment extends Fragment {
+
+    private List<FeedItem> feedItemList;
+    RecyclerView.Adapter adapter;
 
     public FeedsFragment() {
     }
@@ -36,12 +41,20 @@ public class FeedsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         //TODO test list
-        List<FeedItem> rssFeedsList = Util.getFeedItems();
+        feedItemList = Util.getFeedItems();
+        //feedItemList = new ArrayList<>();
 
         //recycler view adapter
-        RecyclerView.Adapter adapter = new FeedsAdapter(getActivity(), rssFeedsList);
+        adapter = new FeedsAdapter(getActivity(), feedItemList);
         recyclerView.setAdapter(adapter);
 
         return fragmentView;
+    }
+
+    public void updateFeedItemsList(ArrayList feedItems) {
+
+        feedItemList.clear();
+        feedItemList.addAll(feedItems == null ? Collections.EMPTY_LIST : feedItems);
+        adapter.notifyDataSetChanged();
     }
 }
