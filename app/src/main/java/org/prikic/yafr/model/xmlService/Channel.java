@@ -4,21 +4,21 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 @Root(name = "channel", strict = false)
 public class Channel implements Serializable {
     @ElementList(inline = true, name="item")
-    private List<FeedItem> feedItems;
+    private ArrayList<FeedItem> feedItems;
 
-    public List<FeedItem> getFeedItems() {
+    public ArrayList<FeedItem> getFeedItems() {
         return feedItems;
     }
 
     public Channel() {
     }
 
-    public Channel(List<FeedItem> feedItems) {
+    public Channel(ArrayList<FeedItem> feedItems) {
         this.feedItems = feedItems;
     }
 }

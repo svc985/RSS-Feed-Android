@@ -28,10 +28,12 @@ import org.prikic.yafr.fragments.FeedsFragment;
 import org.prikic.yafr.fragments.SaveOrEditChannelFragment;
 import org.prikic.yafr.fragments.SourcesFragment;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.FragmentTitle;
 import org.prikic.yafr.util.RssChannelOperation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,14 +92,16 @@ public class MainActivity extends AppCompatActivity
         startService(intent);
 
         // The filter's action is BROADCAST_ACTION_RSS_CHANNEL_SAVED
-        IntentFilter mStatusIntentFilter = new IntentFilter(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
+        IntentFilter statusIntentFilter = new IntentFilter();
+        statusIntentFilter.addAction(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
+        statusIntentFilter.addAction(Constants.BROADCAST_ACTION_FEEDS_FETCHED);
 
         // Instantiates a new ResponseReceiver
         ResponseReceiver responseReceiver = new ResponseReceiver();
         // Registers the ResponseReceiver and its intent filters
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 responseReceiver,
-                mStatusIntentFilter);
+                statusIntentFilter);
 
     }
 
@@ -302,11 +306,20 @@ public class MainActivity extends AppCompatActivity
          * Handle Intents here.
          */
             Timber.d("on receive...");
-            Bundle bundle = intent.getExtras();
-            RssChannel rssChannel = (RssChannel) bundle.getSerializable(Constants.EXTENDED_DATA_RSS_CHANNEL);
+            switch (intent.getAction()) {
+                case Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED: {
+                    Bundle bundle = intent.getExtras();
+                    RssChannel rssChannel = (RssChannel) bundle.getSerializable(Constants.EXTENDED_DATA_RSS_CHANNEL);
 
-            SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
-            sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
+                    SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
+                    sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
+                }
+                case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {
+                    Bundle bundle = intent.getExtras();
+                    ArrayList feedItems = (ArrayList<FeedItem>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
+                    Timber.d("size of fetched list of feeditems:%d",feedItems.size());
+                }
+            }
         }
     }
 }

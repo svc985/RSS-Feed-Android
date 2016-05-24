@@ -30,6 +30,8 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        //TODO perform check - mainActivity may be null
         mainActivity.enableProgressSpinner(true);
     }
 

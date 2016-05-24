@@ -8,15 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.prikic.yafr.R;
+import org.prikic.yafr.model.xmlService.FeedItem;
 
 import java.util.List;
 
 public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> {
 
     private FragmentActivity fragmentActivity;
-    private List<Object> rssFeedsList;
+    private List<FeedItem> rssFeedsList;
 
-    public FeedsAdapter(FragmentActivity fragmentActivity, List<Object> rssFeedsList) {
+    public FeedsAdapter(FragmentActivity fragmentActivity, List<FeedItem> rssFeedsList) {
         this.fragmentActivity = fragmentActivity;
         this.rssFeedsList = rssFeedsList;
     }
@@ -26,12 +27,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtTest;
+        public TextView txtTitle, txtDescription;
 
         public ViewHolder(View view) {
             super(view);
 
-            txtTest = (TextView) view.findViewById(R.id.txt_feed_test);
+            txtTitle = (TextView) view.findViewById(R.id.txt_title);
+            txtDescription = (TextView) view.findViewById(R.id.txt_description);
         }
     }
 
@@ -48,8 +50,9 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(FeedsAdapter.ViewHolder holder, int position) {
 
-        Object obj = rssFeedsList.get(position);
-        holder.txtTest.setText((String) obj);
+        FeedItem feedItem = rssFeedsList.get(position);
+        holder.txtTitle.setText(feedItem.getTitle());
+        holder.txtDescription.setText(feedItem.getDescription());
 
     }
 

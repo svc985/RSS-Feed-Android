@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.adapters.FeedsAdapter;
+import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Util;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class FeedsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         //TODO test list
-        List<Object> rssFeedsList = Util.getDummyList();
+        List<FeedItem> rssFeedsList = Util.getFeedItems();
 
         //recycler view adapter
         RecyclerView.Adapter adapter = new FeedsAdapter(getActivity(), rssFeedsList);
