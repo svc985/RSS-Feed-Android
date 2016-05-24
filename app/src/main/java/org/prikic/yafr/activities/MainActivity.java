@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.background.ChannelOperationAsyncTask;
-import org.prikic.yafr.background.FetchFeedsService;
 import org.prikic.yafr.fragments.FavoritesFragment;
 import org.prikic.yafr.fragments.FeedsFragment;
 import org.prikic.yafr.fragments.SaveOrEditChannelFragment;
@@ -86,10 +85,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-        //start service for fetching feeds
-        Intent intent = new Intent(this, FetchFeedsService.class);
-        startService(intent);
 
         // The filter's action is BROADCAST_ACTION_RSS_CHANNEL_SAVED
         IntentFilter statusIntentFilter = new IntentFilter();
@@ -319,6 +314,10 @@ public class MainActivity extends AppCompatActivity
                     ArrayList feedItems = (ArrayList<FeedItem>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
                     Timber.d("size of fetched list of feeditems:%d, notifying FeedsFragment...",feedItems.size());
                     FeedsFragment feedsFragment = (FeedsFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.FEEDS));
+
+                    if (feedsFragment == null)
+                        return;
+
                     feedsFragment.updateFeedItemsList(feedItems);
                 }
             }

@@ -1,17 +1,23 @@
 package org.prikic.yafr.adapters;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.prikic.yafr.R;
+import org.prikic.yafr.activities.FeedDetailsActivity;
 import org.prikic.yafr.model.xmlService.FeedItem;
+import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.Util;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> {
 
@@ -29,12 +35,25 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtTitle, txtPubDate;
+        public ImageView imgFeedItemDetails;
 
         public ViewHolder(View view) {
             super(view);
 
             txtTitle = (TextView) view.findViewById(R.id.txt_title);
             txtPubDate = (TextView) view.findViewById(R.id.txt_pub_date);
+            imgFeedItemDetails = (ImageView) view.findViewById(R.id.btn_show_feed_details);
+
+            imgFeedItemDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String feedItemLink = (String) imgFeedItemDetails.getTag();
+                    Timber.d("opening feed item details:%s", feedItemLink);
+                    Intent intent = new Intent(fragmentActivity, FeedDetailsActivity.class);
+                    intent.putExtra(Constants.INTENT_FEED_LINK, feedItemLink);
+                    fragmentActivity.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -57,6 +76,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         String pubDate = feedItem.getPubDate();
         String formatedDate = Util.parseDate(pubDate);
         holder.txtPubDate.setText(formatedDate);
+        holder.imgFeedItemDetails.setTag(feedItem.getLink());
 
     }
 

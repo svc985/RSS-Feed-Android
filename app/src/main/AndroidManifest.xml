@@ -29,6 +29,12 @@
             android:parentActivityName=".activities.MainActivity">
         </activity>
 
+        <activity
+            android:name=".activities.FeedDetailsActivity"
+            android:label="@string/about"
+            android:parentActivityName=".activities.MainActivity">
+        </activity>
+
         <service android:name=".background.FetchFeedsService"/>
 
     </application>
