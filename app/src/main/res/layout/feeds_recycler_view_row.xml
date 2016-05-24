@@ -23,7 +23,8 @@
         android:layout_toStartOf="@+id/btn_show_feed_details"
         android:text="@string/lorem_ipsum_short"
         android:textStyle="bold"
-        android:maxLines="2"/>
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/txt_pub_date"
