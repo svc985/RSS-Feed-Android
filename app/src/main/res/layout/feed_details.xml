@@ -5,6 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/feed_details_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/lorem_ipsum_short"/>
+
+        <TextView
+            android:id="@+id/feed_details_published_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/published"
+            android:layout_toRightOf="@id/feed_details_image"
+            android:layout_toEndOf="@id/feed_details_image"/>
+
+        <TextView
+            android:id="@+id/feed_details_published_pub_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lorem_ipsum_short"
+            android:layout_toRightOf="@id/feed_details_image"
+            android:layout_toEndOf="@id/feed_details_image"
+            android:layout_below="@id/feed_details_published_label"/>
+
+        <TextView
+            android:id="@+id/feed_details_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/source"
+            android:layout_toRightOf="@id/feed_details_image"
+            android:layout_toEndOf="@id/feed_details_image"
+            android:layout_below="@id/feed_details_published_pub_date"/>
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/feed_details_title"
         android:layout_width="wrap_content"

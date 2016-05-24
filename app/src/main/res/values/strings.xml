@@ -2,6 +2,7 @@
     <string name="app_name">YAFR</string>
     <string name="app_icon">App Icon</string>
     <string name="about">About</string>
+    <string name="feed_details">Feed Details</string>
     <string name="lorem_ipsum_short">Lorem ipsum</string>
     <string name="worth_mentioning_text">Whatever developer finds worth mentioning</string>
     <string name="author_name">Borislav Prikić</string>
@@ -17,6 +18,9 @@
     <string name="rss_channel_edited">Rss Channel edited</string>
     <string name="image_view_show_channel_details">Show Rss Channel details</string>
     <string name="row_selection">Row selection</string>
+
+    <string name="published">Published</string>
+    <string name="source">Source</string>
 
     <!-- toolbar -->
     <string name="menu_title_delete">Delete</string>

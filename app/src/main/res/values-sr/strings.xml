@@ -2,6 +2,7 @@
 <resources>
     <string name="app_icon">Ikona aplikacije</string>
     <string name="about">O Programu</string>
+    <string name="feed_details">Detalji vesti</string>
     <string name="worth_mentioning_text">Šta god programer smatra vrednim pominjanja</string>
     <string name="source_name">Ime RSS kanala</string>
     <string name="source_url">URL RSS kanala</string>
@@ -14,6 +15,9 @@
     <string name="rss_channel_edited">Rss kanal editovan</string>
     <string name="image_view_show_channel_details">Prikaži detalje kanala</string>
     <string name="row_selection">Selekcija reda</string>
+
+    <string name="published">Datum izdavanja</string>
+    <string name="source">Izvor</string>
 
     <!-- toolbar -->
     <string name="menu_title_delete">Obriši</string>

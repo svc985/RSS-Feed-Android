@@ -31,7 +31,7 @@
 
         <activity
             android:name=".activities.FeedDetailsActivity"
-            android:label="@string/about"
+            android:label="@string/feed_details"
             android:parentActivityName=".activities.MainActivity">
         </activity>
 

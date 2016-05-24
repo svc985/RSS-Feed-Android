@@ -12,6 +12,6 @@ public class Constants {
     public static final String EXTENDED_DATA_FEED_ITEM_LIST =
             "org.prikic.yafr.list.feedItem";
 
-    public static final String INTENT_FEED_LINK =
-            "org.prikic.yafr.feedItem.Link";
+    public static final String INTENT_FEED_ITEM =
+            "org.prikic.yafr.feedItem";
 }

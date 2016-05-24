@@ -47,10 +47,10 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             imgFeedItemDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String feedItemLink = (String) imgFeedItemDetails.getTag();
-                    Timber.d("opening feed item details:%s", feedItemLink);
+                    FeedItem feedItem = rssFeedsList.get(getAdapterPosition());
+                    Timber.d("opening feed item details:%s", feedItem.getLink());
                     Intent intent = new Intent(fragmentActivity, FeedDetailsActivity.class);
-                    intent.putExtra(Constants.INTENT_FEED_LINK, feedItemLink);
+                    intent.putExtra(Constants.INTENT_FEED_ITEM, feedItem);
                     fragmentActivity.startActivity(intent);
                 }
             });
@@ -76,7 +76,6 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         String pubDate = feedItem.getPubDate();
         String formatedDate = Util.parseDate(pubDate);
         holder.txtPubDate.setText(formatedDate);
-        holder.imgFeedItemDetails.setTag(feedItem.getLink());
 
     }
 
