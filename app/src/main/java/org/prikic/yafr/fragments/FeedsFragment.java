@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import org.prikic.yafr.R;
 import org.prikic.yafr.adapters.FeedsAdapter;
 import org.prikic.yafr.model.xmlService.FeedItem;
-import org.prikic.yafr.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +40,8 @@ public class FeedsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         //TODO test list
-        feedItemList = Util.getFeedItems();
-        //feedItemList = new ArrayList<>();
+        //feedItemList = Util.getFeedItems();
+        feedItemList = new ArrayList<>();
 
         //recycler view adapter
         adapter = new FeedsAdapter(getActivity(), feedItemList);

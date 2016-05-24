@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.model.xmlService.FeedItem;
+import org.prikic.yafr.util.Util;
 
 import java.util.List;
 
@@ -52,7 +53,10 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
 
         FeedItem feedItem = rssFeedsList.get(position);
         holder.txtTitle.setText(feedItem.getTitle());
-        holder.txtPubDate.setText(feedItem.getPubDate());
+
+        String pubDate = feedItem.getPubDate();
+        String formatedDate = Util.parseDate(pubDate);
+        holder.txtPubDate.setText(formatedDate);
 
     }
 
