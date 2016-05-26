@@ -32,7 +32,8 @@
         <activity
             android:name=".activities.FeedDetailsActivity"
             android:label="@string/feed_details"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name=".background.FetchFeedsService"/>
