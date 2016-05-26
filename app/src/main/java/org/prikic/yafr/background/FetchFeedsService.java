@@ -48,6 +48,7 @@ public class FetchFeedsService extends IntentService {
                 if (feed.getChannel().getFeedItems() != null) {
                     ArrayList<FeedItem> feedItems = feed.getChannel().getFeedItems();
                     Timber.d("feedResponse:%d", feed.getChannel().getFeedItems().size());
+                    Timber.d("feed image logo:%s", feed.getChannel().getFeedImage().getUrl());
 
                     //send local broadcast
                     Intent localIntent = new Intent(Constants.BROADCAST_ACTION_FEEDS_FETCHED);
