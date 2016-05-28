@@ -38,8 +38,9 @@ public class FeedDetailsActivity extends AppCompatActivity {
         ImageView feedDetailsSourceImage = (ImageView) findViewById(R.id.feed_details_source_image);
         Picasso.with(this)
                 .load(feedItem.getSource_image_url())
-                .resize(50, 30)
-                .centerCrop()
+                .resize(60, 30)
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.progress_animation)
                 .into(feedDetailsSourceImage);
 
         WebView webView = (WebView) findViewById(R.id.feed_item_web_view);
@@ -47,7 +48,7 @@ public class FeedDetailsActivity extends AppCompatActivity {
         if (webView != null && feedItem != null) {
             webView.loadUrl(feedItem.getLink());
             feedDetailsTitle.setText(Html.fromHtml(feedItem.getTitle()));
-            feedDetailsDescription.setText(feedItem.getDescription());
+            feedDetailsDescription.setText(Html.fromHtml(feedItem.getDescription()));
             String pubDate = Util.parseDate(feedItem.getPubDate());
             feedDetailsPubDate.setText(pubDate);
 
