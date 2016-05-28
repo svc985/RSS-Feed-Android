@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import org.prikic.yafr.db.dao.RssChannelDAO;
+import org.prikic.yafr.model.FeedItemExtended;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.model.xmlService.Feed;
 import org.prikic.yafr.model.xmlService.FeedItem;
@@ -47,14 +48,16 @@ public class FetchFeedsService extends IntentService {
                 Timber.d("response code:%d", feedResponse.code());
                 if (feed.getChannel().getFeedItems() != null) {
                     ArrayList<FeedItem> feedItems = feed.getChannel().getFeedItems();
-                    Timber.d("feedResponse:%d", feed.getChannel().getFeedItems().size());
-                    Timber.d("feed image logo:%s", feed.getChannel().getFeedImage().getUrl());
+                    String feedImageURL = feed.getChannel().getFeedImage().getUrl();
+                    ArrayList<FeedItemExtended> feedItemsExtended = convertFeedItemsToExtendedForm(feedItems, feedImageURL);
+
+                    Timber.d("feedResponse:%d", feedItemsExtended.size());
+                    Timber.d("feed image logo URL:%s", feedImageURL);
 
                     //send local broadcast
                     Intent localIntent = new Intent(Constants.BROADCAST_ACTION_FEEDS_FETCHED);
                     // Put feedItems list into Intent
-                    localIntent.putExtra(Constants.EXTENDED_DATA_FEED_ITEM_LIST, feedItems);
-                    //TODO localIntent.putParcelableArrayListExtra(Constants.EXTENDED_DATA_FEED_ITEM_LIST, feedItems);
+                    localIntent.putExtra(Constants.EXTENDED_DATA_FEED_ITEM_LIST, feedItemsExtended);
                     // Broadcasts the Intent to receivers in this app.
                     LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
                 }
@@ -63,5 +66,16 @@ public class FetchFeedsService extends IntentService {
                 Timber.e(e.getMessage());
             }
         }
+    }
+
+    private ArrayList<FeedItemExtended> convertFeedItemsToExtendedForm(ArrayList<FeedItem> feedItems, String feedImageURL) {
+
+        ArrayList<FeedItemExtended> feedItemsExtended = new ArrayList<>();
+
+        for(FeedItem feedItem : feedItems) {
+            feedItemsExtended.add(new FeedItemExtended(feedItem.getDescription(), feedItem.getLink(),
+                    feedItem.getTitle(), feedItem.getPubDate(), feedImageURL));
+        }
+        return feedItemsExtended;
     }
 }

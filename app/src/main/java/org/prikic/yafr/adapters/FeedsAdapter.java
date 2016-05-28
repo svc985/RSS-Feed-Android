@@ -3,6 +3,7 @@ package org.prikic.yafr.adapters;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.FeedDetailsActivity;
-import org.prikic.yafr.model.xmlService.FeedItem;
+import org.prikic.yafr.model.FeedItemExtended;
 import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.Util;
 
@@ -22,9 +23,9 @@ import timber.log.Timber;
 public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> {
 
     private FragmentActivity fragmentActivity;
-    private List<FeedItem> rssFeedsList;
+    private List<FeedItemExtended> rssFeedsList;
 
-    public FeedsAdapter(FragmentActivity fragmentActivity, List<FeedItem> rssFeedsList) {
+    public FeedsAdapter(FragmentActivity fragmentActivity, List<FeedItemExtended> rssFeedsList) {
         this.fragmentActivity = fragmentActivity;
         this.rssFeedsList = rssFeedsList;
     }
@@ -47,7 +48,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             imgFeedItemDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FeedItem feedItem = rssFeedsList.get(getAdapterPosition());
+                    FeedItemExtended feedItem = rssFeedsList.get(getAdapterPosition());
                     Timber.d("opening feed item details:%s", feedItem.getLink());
                     Intent intent = new Intent(fragmentActivity, FeedDetailsActivity.class);
                     intent.putExtra(Constants.INTENT_FEED_ITEM, feedItem);
@@ -70,8 +71,8 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(FeedsAdapter.ViewHolder holder, int position) {
 
-        FeedItem feedItem = rssFeedsList.get(position);
-        holder.txtTitle.setText(feedItem.getTitle());
+        FeedItemExtended feedItem = rssFeedsList.get(position);
+        holder.txtTitle.setText(Html.fromHtml(feedItem.getTitle()));
 
         String pubDate = feedItem.getPubDate();
         String formatedDate = Util.parseDate(pubDate);

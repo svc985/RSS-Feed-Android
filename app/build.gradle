@@ -37,4 +37,5 @@ dependencies {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

@@ -26,6 +26,7 @@ import org.prikic.yafr.fragments.FavoritesFragment;
 import org.prikic.yafr.fragments.FeedsFragment;
 import org.prikic.yafr.fragments.SaveOrEditChannelFragment;
 import org.prikic.yafr.fragments.SourcesFragment;
+import org.prikic.yafr.model.FeedItemExtended;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Constants;
@@ -311,7 +312,8 @@ public class MainActivity extends AppCompatActivity
                 }
                 case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {
                     Bundle bundle = intent.getExtras();
-                    ArrayList feedItems = (ArrayList<FeedItem>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
+                    ArrayList feedItems = (ArrayList<FeedItemExtended>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
+
                     Timber.d("size of fetched list of feeditems:%d, notifying FeedsFragment...",feedItems.size());
                     FeedsFragment feedsFragment = (FeedsFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.FEEDS));
 
