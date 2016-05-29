@@ -17,11 +17,10 @@ import org.prikic.yafr.model.FeedItemExtended;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class FeedsFragment extends Fragment {
 
-    private List<FeedItemExtended> feedItemList;
+    private ArrayList<FeedItemExtended> feedItemList;
     RecyclerView.Adapter adapter;
 
     public FeedsFragment() {
@@ -56,10 +55,10 @@ public class FeedsFragment extends Fragment {
         return fragmentView;
     }
 
-    public void updateFeedItemsList(ArrayList feedItems) {
+    public void updateFeedItemsList(ArrayList<FeedItemExtended> feedItems) {
 
         feedItemList.clear();
-        feedItemList.addAll(feedItems == null ? Collections.EMPTY_LIST : feedItems);
+        feedItemList.addAll(feedItems == null ? Collections.<FeedItemExtended>emptyList() : feedItems);
         adapter.notifyDataSetChanged();
     }
 }

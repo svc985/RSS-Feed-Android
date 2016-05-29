@@ -24,6 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/published"
+            android:layout_toLeftOf="@+id/favorite_selection_image"
+            android:layout_toStartOf="@+id/favorite_selection_image"
             android:layout_toRightOf="@id/feed_details_image"
             android:layout_toEndOf="@id/feed_details_image"/>
 
@@ -62,6 +64,17 @@
                 android:contentDescription="@string/lorem_ipsum_short"/>
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/favorite_selection_image"
+            android:tag="notSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorite_not_selected"
+            android:tint="@color/colorAccent"
+            android:contentDescription="@string/lorem_ipsum_short"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/feed_details_title"

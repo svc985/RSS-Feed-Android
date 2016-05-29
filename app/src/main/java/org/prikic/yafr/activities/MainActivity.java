@@ -28,7 +28,6 @@ import org.prikic.yafr.fragments.SaveOrEditChannelFragment;
 import org.prikic.yafr.fragments.SourcesFragment;
 import org.prikic.yafr.model.FeedItemExtended;
 import org.prikic.yafr.model.RssChannel;
-import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.FragmentTitle;
 import org.prikic.yafr.util.RssChannelOperation;
@@ -312,9 +311,15 @@ public class MainActivity extends AppCompatActivity
                 }
                 case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {
                     Bundle bundle = intent.getExtras();
-                    ArrayList feedItems = (ArrayList<FeedItemExtended>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
 
-                    Timber.d("size of fetched list of feeditems:%d, notifying FeedsFragment...",feedItems.size());
+                    @SuppressWarnings("unchecked")
+                    ArrayList<FeedItemExtended> feedItems = (ArrayList<FeedItemExtended>) bundle.getSerializable(Constants.EXTENDED_DATA_FEED_ITEM_LIST);
+
+                    if (feedItems != null)
+                        Timber.d("size of fetched list of feeditems:%d, notifying FeedsFragment...",feedItems.size());
+                    else
+                        Timber.e("feedItems is null!!!");
+
                     FeedsFragment feedsFragment = (FeedsFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.FEEDS));
 
                     if (feedsFragment == null)

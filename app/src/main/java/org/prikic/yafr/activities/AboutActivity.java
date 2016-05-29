@@ -9,13 +9,14 @@ import org.prikic.yafr.R;
 
 public class AboutActivity extends AppCompatActivity {
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_screen);
 
-        TextView application_version = (TextView) findViewById(R.id.application_version);
-        application_version.setText(BuildConfig.VERSION_NAME);
+        TextView applicationVersion = (TextView) findViewById(R.id.application_version);
+        applicationVersion.setText(BuildConfig.VERSION_NAME);
 
     }
 }

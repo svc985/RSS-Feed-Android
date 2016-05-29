@@ -8,7 +8,7 @@ public class FeedItemExtended implements Serializable {
     private String title;
     private String link;
     private String description;
-    private String source_image_url;
+    private String sourceImageUrl;
 
     public FeedItemExtended() {
     }
@@ -18,7 +18,7 @@ public class FeedItemExtended implements Serializable {
         this.link = link;
         this.title = title;
         this.pubDate = pubDate;
-        this.source_image_url = source_image_url;
+        this.sourceImageUrl = source_image_url;
     }
 
     public String getPubDate() {
@@ -53,11 +53,11 @@ public class FeedItemExtended implements Serializable {
         this.description = description;
     }
 
-    public String getSource_image_url() {
-        return source_image_url;
+    public String getSourceImageUrl() {
+        return sourceImageUrl;
     }
 
-    public void setSource_image_url(String source_image_url) {
-        this.source_image_url = source_image_url;
+    public void setSourceImageUrl(String sourceImageUrl) {
+        this.sourceImageUrl = sourceImageUrl;
     }
 }
