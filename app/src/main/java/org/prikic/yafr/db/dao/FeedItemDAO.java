@@ -2,12 +2,16 @@ package org.prikic.yafr.db.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.prikic.yafr.db.RssFeedsContract;
 import org.prikic.yafr.db.RssFeedsDbHelper;
 import org.prikic.yafr.model.FeedItemExtended;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -85,5 +89,41 @@ public class FeedItemDAO {
 
     }
 
-    
+    public List<FeedItemExtended> getFavorites() {
+
+        List<FeedItemExtended> feeds = new LinkedList<>();
+
+        open();
+
+        // How you want the results sorted in the resulting Cursor
+        //TODO sort by pubDate
+
+        Cursor c = database.query(
+                RssFeedsContract.FeedItemEntry.TABLE_NAME,  // The table to query
+                allColumns,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        try {
+            while (c.moveToNext()) {
+                //long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));
+                String pubDate = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.FeedItemEntry.COLUMN_PUB_DATE));
+                String title = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.FeedItemEntry.COLUMN_TITLE));
+                String link = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.FeedItemEntry.COLUMN_LINK));
+                String description = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.FeedItemEntry.COLUMN_DESCRIPTION));
+                String sourceImageURL = c.getString(c.getColumnIndexOrThrow(RssFeedsContract.FeedItemEntry.COLUMN_SOURCE_IMAGE_URL));
+
+                FeedItemExtended feedItemExtended = new FeedItemExtended(description, link, title, pubDate, sourceImageURL);
+                feeds.add(feedItemExtended);
+            }
+        }
+        finally {
+            c.close();
+        }
+        return feeds;
+    }
 }
