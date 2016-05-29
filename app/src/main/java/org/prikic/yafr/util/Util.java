@@ -1,6 +1,6 @@
 package org.prikic.yafr.util;
 
-import org.prikic.yafr.model.xmlService.FeedItem;
+import org.prikic.yafr.model.FeedItemExtended;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,10 +22,10 @@ public class Util {
         return list;
     }
 
-    public static List<FeedItem> getFeedItems() {
-        List<FeedItem> feedItems = new ArrayList<>();
-        feedItems.add(new FeedItem("desc", "link", "title", "pubDate"));
-        feedItems.add(new FeedItem("desc 2", "link 2", "title 2", "pubDate 2"));
+    public static ArrayList<FeedItemExtended> getFeedItems() {
+        ArrayList<FeedItemExtended> feedItems = new ArrayList<>();
+        feedItems.add(new FeedItemExtended("desc", "link", "title", "pubDate", "source image url"));
+        feedItems.add(new FeedItemExtended("desc 2", "link 2", "title 2", "pubDate 2", "source image url2"));
 
         return feedItems;
     }

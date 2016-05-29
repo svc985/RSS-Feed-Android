@@ -14,4 +14,6 @@ public class Constants {
 
     public static final String INTENT_FEED_ITEM =
             "org.prikic.yafr.feedItem";
+    public static final String INTENT_FEED_IS_FAVORITE =
+            "org.prikic.yafr.feedItem.favorite";
 }

@@ -36,6 +36,7 @@ public class FeedDetailsActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         feedItemExtended = (FeedItemExtended) bundle.getSerializable(Constants.INTENT_FEED_ITEM);
+        boolean isFavorite = bundle.getBoolean(Constants.INTENT_FEED_IS_FAVORITE, false);
 
         ImageView feedDetailsSourceImage = (ImageView) findViewById(R.id.feed_details_source_image);
         Picasso.with(this)
@@ -46,6 +47,10 @@ public class FeedDetailsActivity extends AppCompatActivity {
                 .into(feedDetailsSourceImage);
 
         final ImageView favoriteSelectionImage = (ImageView) findViewById(R.id.favorite_selection_image);
+
+        if(isFavorite)
+            favoriteSelectionImage.setImageResource(R.drawable.favorite_selected);
+
         if (favoriteSelectionImage != null) {
             favoriteSelectionImage.setOnClickListener(new View.OnClickListener() {
                 @Override

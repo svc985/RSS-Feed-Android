@@ -29,7 +29,7 @@ public class FeedItemDAO {
             RssFeedsContract.FeedItemEntry.COLUMN_DESCRIPTION,
             RssFeedsContract.FeedItemEntry.COLUMN_SOURCE_IMAGE_URL};
 
-
+    @SuppressWarnings("unused")
     private FeedItemDAO () {
     }
 

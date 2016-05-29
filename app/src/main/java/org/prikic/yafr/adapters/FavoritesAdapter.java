@@ -20,12 +20,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder>{
 
     private FragmentActivity fragmentActivity;
     private List<FeedItemExtended> rssFeedsList;
 
-    public FeedsAdapter(FragmentActivity fragmentActivity, List<FeedItemExtended> rssFeedsList) {
+    public FavoritesAdapter(FragmentActivity fragmentActivity, List<FeedItemExtended> rssFeedsList) {
         this.fragmentActivity = fragmentActivity;
         this.rssFeedsList = rssFeedsList;
     }
@@ -52,6 +52,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
                     Timber.d("opening feed item details:%s", feedItem.getLink());
                     Intent intent = new Intent(fragmentActivity, FeedDetailsActivity.class);
                     intent.putExtra(Constants.INTENT_FEED_ITEM, feedItem);
+                    intent.putExtra(Constants.INTENT_FEED_IS_FAVORITE, true);
                     fragmentActivity.startActivity(intent);
                 }
             });
@@ -59,17 +60,17 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     }
 
     @Override
-    public FeedsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavoritesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.feeds_recycler_view_row, parent, false);
+                .inflate(R.layout.favorites_recycler_view_row, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(FeedsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(FavoritesAdapter.ViewHolder holder, int position) {
 
         FeedItemExtended feedItem = rssFeedsList.get(position);
         holder.txtTitle.setText(Html.fromHtml(feedItem.getTitle()));
@@ -77,7 +78,6 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         String pubDate = feedItem.getPubDate();
         String formatedDate = Util.parseDate(pubDate);
         holder.txtPubDate.setText(formatedDate);
-
     }
 
     @Override
