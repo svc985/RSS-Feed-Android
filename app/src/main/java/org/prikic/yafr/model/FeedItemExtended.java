@@ -13,12 +13,12 @@ public class FeedItemExtended implements Serializable {
     public FeedItemExtended() {
     }
 
-    public FeedItemExtended(String description, String link, String title, String pubDate, String source_image_url) {
+    public FeedItemExtended(String description, String link, String title, String pubDate, String sourceImageUrl) {
         this.description = description;
         this.link = link;
         this.title = title;
         this.pubDate = pubDate;
-        this.sourceImageUrl = source_image_url;
+        this.sourceImageUrl = sourceImageUrl;
     }
 
     public String getPubDate() {
