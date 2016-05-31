@@ -45,13 +45,16 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
     private boolean isInChoiceMode;
 
-    MainActivity activity;
+    private MainActivity activity;
+
+    private Loader sourcesLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getLoaderManager().initLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal(), null, this).forceLoad();
+        sourcesLoader = getLoaderManager().initLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal(), null, this);
+        sourcesLoader.forceLoad();
 
         activity = (MainActivity) getActivity();
     }
@@ -108,13 +111,14 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
     }
 
-    public void displaySnackBarSavedRssChannel(RssChannel rssChannel) {
+    public void displaySnackBarSavedRssChannel() {
 
         Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_saved, Snackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundResource(R.color.colorPrimary);
         snackbar.show();
-        adapter.addRssChannelToChannelList(rssChannel);
+        sourcesLoader.onContentChanged();
+
     }
 
     /*cancel any selections*/
@@ -136,8 +140,9 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<List<RssChannel>> loader, List<RssChannel> data) {
         Timber.d("load finished for loading rss channels, with size:%d", data.size());
-        rssChannelList = data;
-        adapter.setRssChannelList(data);
+        rssChannelList.clear();
+        rssChannelList.addAll(data);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -150,7 +155,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
         private final GestureDetectorCompat gestureDetectorCompat;
 
-        public MyRecyclerViewOnItemTouchListener (Context context, final RecyclerView recyclerView) {
+        private MyRecyclerViewOnItemTouchListener (Context context, final RecyclerView recyclerView) {
             gestureDetectorCompat = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
 
 

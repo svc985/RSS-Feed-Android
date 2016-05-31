@@ -19,11 +19,6 @@ public class RssChannel implements Serializable{
         this.isChannelActive = isChannelActive;
     }
 
-    public RssChannel(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
-
     public long getId() {
         return id;
     }

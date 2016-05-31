@@ -33,16 +33,6 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
         this.rssChannelList = rssChannelList;
     }
 
-    public void setRssChannelList(List<RssChannel> rssChannelList) {
-        this.rssChannelList = rssChannelList;
-        notifyDataSetChanged();
-    }
-
-    public void addRssChannelToChannelList(RssChannel rssChannel) {
-        rssChannelList.add(rssChannel);
-        notifyDataSetChanged();
-    }
-
     public void updateRssChannelListAtPosition(RssChannel rssChannel, int position) {
         rssChannelList.set(position, rssChannel);
         notifyDataSetChanged();
@@ -51,15 +41,15 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
-        public TextView txtSourceName, txtSourceURL;
-        public ImageView btnShowSourceDetails;
-        public Switch switchChannel;
-        public ImageButton rowSelection;
-        public LinearLayout nonTextualComponents;
+        TextView txtSourceName, txtSourceURL;
+        ImageView btnShowSourceDetails;
+        Switch switchChannel;
+        ImageButton rowSelection;
+        LinearLayout nonTextualComponents;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             txtSourceName = (TextView) view.findViewById(R.id.txt_source_name);
             txtSourceURL = (TextView) view.findViewById(R.id.txt_source_url);

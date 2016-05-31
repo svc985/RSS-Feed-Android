@@ -67,11 +67,9 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
         mainActivity.enableProgressSpinner(false);
 
         if ( operation == RssChannelOperation.SAVE) {
-            //TODO channel is saved - send local broadcast
+
             Intent localIntent = new Intent(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
 
-            // Puts the rssChannel into the Intent
-            localIntent.putExtra(Constants.EXTENDED_DATA_RSS_CHANNEL, rssChannel);
             // Broadcasts the Intent to receivers in this app.
             LocalBroadcastManager.getInstance(mainActivity).sendBroadcast(localIntent);
         }

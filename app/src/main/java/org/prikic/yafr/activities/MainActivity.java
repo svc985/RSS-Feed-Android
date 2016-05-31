@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // The filter's action is BROADCAST_ACTION_RSS_CHANNEL_SAVED
         IntentFilter statusIntentFilter = new IntentFilter();
         statusIntentFilter.addAction(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
         statusIntentFilter.addAction(Constants.BROADCAST_ACTION_FEEDS_FETCHED);
@@ -303,11 +302,9 @@ public class MainActivity extends AppCompatActivity
             Timber.d("on receive...");
             switch (intent.getAction()) {
                 case Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED: {
-                    Bundle bundle = intent.getExtras();
-                    RssChannel rssChannel = (RssChannel) bundle.getSerializable(Constants.EXTENDED_DATA_RSS_CHANNEL);
-
                     SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
-                    sourcesFragment.displaySnackBarSavedRssChannel(rssChannel);
+                    sourcesFragment.displaySnackBarSavedRssChannel();
+                    break;
                 }
                 case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {
                     Bundle bundle = intent.getExtras();
@@ -326,6 +323,7 @@ public class MainActivity extends AppCompatActivity
                         return;
 
                     feedsFragment.updateFeedItemsList(feedItems);
+                    break;
                 }
             }
         }
