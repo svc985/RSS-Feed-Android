@@ -23,7 +23,7 @@ public class ChannelLoader extends AsyncTaskLoader<List<RssChannel>>{
     @Override
     public List<RssChannel> loadInBackground() {
         Timber.d("Channel loader - loadInBackground");
-        RssChannelDAO rssChannelDAO = new RssChannelDAO(context);
+        RssChannelDAO rssChannelDAO = RssChannelDAO.getInstance(context);
         return rssChannelDAO.getRssChannels();
     }
 

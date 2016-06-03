@@ -31,13 +31,12 @@ public class FetchFeedsService extends IntentService {
 
         Timber.d("FetchFeedsService onHandleIntent...");
 
-        RssChannelDAO rssChannelDAO = new RssChannelDAO(this);
+        RssChannelDAO rssChannelDAO = RssChannelDAO.getInstance(this);
         List<RssChannel> rssChannels = rssChannelDAO.getActiveRssChannels();
         Timber.d("num of active channels:%d", rssChannels.size());
 
-        //TODO replace hardcoded value
         for(RssChannel rssChannel : rssChannels) {
-            //String url = "http://sport.blic.rs/rss/danasnje-vesti";
+
             String url = rssChannel.getUrl();
             Call<Feed> fetchFeeds = ServiceFactory.buildService().getFeeds(url);
             Timber.d("test URL is:%s", url);

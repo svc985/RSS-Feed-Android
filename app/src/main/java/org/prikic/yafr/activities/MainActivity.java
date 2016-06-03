@@ -41,16 +41,15 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity
         implements SaveOrEditChannelFragment.OnRssChannelOperationListener {
 
-    ViewPager viewPager;
-    ViewPagerAdapter viewPagerAdapter;
+    private ViewPagerAdapter viewPagerAdapter;
 
     private boolean showProgressSpinnerInToolbar = false;
 
-    TextView txtToolbarCounter;
-    Toolbar toolbar;
-    ImageView imageIconActionToolbar;
+    private TextView txtToolbarCounter;
+    private Toolbar toolbar;
+    private ImageView imageIconActionToolbar;
 
-    public void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
+    private void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
         this.showProgressSpinnerInToolbar = showProgressSpinnerInToolbar;
     }
 
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -104,12 +103,12 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(viewPagerAdapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final Map<String, String> fragmentTags = new HashMap<>();
         private static final int NUM_OF_FRAGMENTS = 3;
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        private ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -303,7 +302,8 @@ public class MainActivity extends AppCompatActivity
             switch (intent.getAction()) {
                 case Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED: {
                     SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
-                    sourcesFragment.displaySnackBarSavedRssChannel();
+                    if (sourcesFragment != null)
+                        sourcesFragment.displaySnackBarSavedRssChannel();
                     break;
                 }
                 case Constants.BROADCAST_ACTION_FEEDS_FETCHED: {

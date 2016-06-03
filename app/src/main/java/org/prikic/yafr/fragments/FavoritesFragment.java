@@ -72,8 +72,7 @@ public class FavoritesFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<List<FeedItemExtended>> loader) {
-        //TODO
-        Timber.d("loader reset for loading rss channels");
+        Timber.d("loader reset for loading feed favorites");
     }
 
 }

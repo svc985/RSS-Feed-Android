@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.MainActivity;
 import org.prikic.yafr.adapters.SourcesAdapter;
-import org.prikic.yafr.background.ChannelOperationAsyncTask;
+import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.loaders.ChannelLoader;
 import org.prikic.yafr.loaders.Loaders;
 import org.prikic.yafr.model.RssChannel;
@@ -39,7 +39,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
     private CoordinatorLayout coordinatorLayout;
 
     private List<RssChannel> rssChannelList = new LinkedList<>();
-    public static List<Long> selectedItemIdList;
+    public static ArrayList<Long> selectedItemIdList;
 
     private SourcesAdapter adapter;
 
@@ -147,7 +147,6 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoaderReset(Loader<List<RssChannel>> loader) {
-        //TODO
         Timber.d("loader reset for loading rss channels");
     }
 
@@ -298,7 +297,11 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
 
     public void deleteSelectedChannels() {
         Timber.d("delete selected channels...");
-        new ChannelOperationAsyncTask(selectedItemIdList, RssChannelOperation.DELETE, getActivity()).execute();
+        //ChannelOperationAsyncTask c = new ChannelOperationAsyncTask(selectedItemIdList, RssChannelOperation.DELETE, getActivity());
+        //DeleteChannelsAsyncTask c = new DeleteChannelsAsyncTask(getActivity(), selectedItemIdList);
+        //c.execute();
+        RssChannelDAO.getInstance(getContext()).deleteRssChannels(selectedItemIdList);
+
         getLoaderManager().getLoader(Loaders.GET_ALL_RSS_CHANNELS.ordinal()).onContentChanged();
         activity.showNormalToolbar();
     }

@@ -11,6 +11,7 @@ import org.prikic.yafr.db.RssFeedsDbHelper;
 import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.DBUtil;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,16 +26,28 @@ public class RssChannelDAO {
     RssFeedsContract.ChannelEntry.COLUMN_NAME, RssFeedsContract.ChannelEntry.COLUMN_URL,
     RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE};
 
-    public RssChannelDAO(Context context) {
+    private static RssChannelDAO instance;
+
+    @SuppressWarnings("unused")
+    private RssChannelDAO () {
+    }
+
+    private RssChannelDAO(Context context) {
         rssFeedsDbHelper = new RssFeedsDbHelper(context);
+    }
+
+    public static RssChannelDAO getInstance(Context context) {
+        if (instance == null)
+            instance = new RssChannelDAO(context);
+        return instance;
     }
 
     public void open() throws SQLException {
         database = rssFeedsDbHelper.getWritableDatabase();
     }
 
-    public void close() {
-        rssFeedsDbHelper.close();
+    private void close() {
+        database.close();
     }
 
     public long saveRssChannel(RssChannel rssChannel) {
@@ -46,31 +59,30 @@ public class RssChannelDAO {
         values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
         //default for activeRssChannel is true
-        int activeFlag = DBUtil.convertBooleanToInt(rssChannel.isChannelActive());
+        //TODO for testing purposes
+        int activeFlag = DBUtil.convertBooleanToInt(false);
         values.put(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE, activeFlag);
 
         //Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = database.insert(RssFeedsContract.ChannelEntry.TABLE_NAME, null, values);
 
-        //TODO should not be closed??
-        //https://groups.google.com/forum/#!msg/android-developers/nopkaw4UZ9U/cPfPL3uW7nQJ
-        //close();
+        close();
 
         return newRowId;
     }
 
     public List<RssChannel> getRssChannels() {
 
-        List<RssChannel> rssChannels = new LinkedList<>();
+        open();
 
-        SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
+        List<RssChannel> rssChannels = new LinkedList<>();
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
                 RssFeedsContract.ChannelEntry.COLUMN_NAME + " ASC";
 
-        Cursor c = db.query(
+        Cursor c = database.query(
                 RssFeedsContract.ChannelEntry.TABLE_NAME,  // The table to query
                 allColumns,                               // The columns to return
                 null,                                // The columns for the WHERE clause
@@ -92,6 +104,7 @@ public class RssChannelDAO {
         }
         finally {
             c.close();
+            close();
         }
         return rssChannels;
     }
@@ -111,6 +124,8 @@ public class RssChannelDAO {
         String[] selectionArgs = { String.valueOf(rssChannel.getId()) };
 
         database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        close();
     }
 
     public void updateRssChannelActiveFlag(RssChannel rssChannel) {
@@ -128,10 +143,15 @@ public class RssChannelDAO {
         String[] selectionArgs = { String.valueOf(rssChannel.getId()) };
 
         database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        close();
     }
 
-    public void deleteRssChannels(List<Long> idsToDeleteList) {
+    public void deleteRssChannels(ArrayList<Long> idsToDeleteList) {
+
         open();
+
+        Timber.d("list size to delete:%s", idsToDeleteList.size());
         for (Long l: idsToDeleteList) {
             Timber.d("delete id:%d", l);
             // Define 'where' part of query.
@@ -141,9 +161,13 @@ public class RssChannelDAO {
             // Issue SQL statement.
             database.delete(RssFeedsContract.ChannelEntry.TABLE_NAME, selection, selectionArgs);
         }
+        close();
     }
 
     public List<RssChannel> getActiveRssChannels() {
+
+        open();
+
         List<RssChannel> activeRssChannels = new LinkedList<>();
 
         SQLiteDatabase db = rssFeedsDbHelper.getReadableDatabase();
@@ -174,6 +198,7 @@ public class RssChannelDAO {
         }
         finally {
             c.close();
+            close();
         }
         return activeRssChannels;
     }

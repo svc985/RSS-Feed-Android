@@ -11,19 +11,17 @@ import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.RssChannelOperation;
 
-import java.util.List;
-
 public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel> {
 
-    Object object;
-    RssChannelDAO rssChannelDAO;
-    MainActivity mainActivity;
-    RssChannelOperation operation;
+    private Object object;
+    private RssChannelDAO rssChannelDAO;
+    private MainActivity mainActivity;
+    private RssChannelOperation operation;
 
     public ChannelOperationAsyncTask(Object obj, RssChannelOperation operation, Context context) {
         this.object = obj;
         this.operation = operation;
-        rssChannelDAO = new RssChannelDAO(context);
+        rssChannelDAO = RssChannelDAO.getInstance(mainActivity);
         mainActivity = (MainActivity) context;
     }
 
@@ -52,9 +50,10 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
                 rssChannelDAO.updateRssChannelActiveFlag(rssChannel3);
                 break;
             case DELETE:
-                @SuppressWarnings("unchecked")
-                List<Long> channelIdsToDelete = (List<Long>) object;
-                rssChannelDAO.deleteRssChannels(channelIdsToDelete);
+                //@SuppressWarnings("unchecked")
+                //List<Long> channelIdsToDelete = (List<Long>) object;
+                //rssChannelDAO.deleteRssChannels(channelIdsToDelete);
+                break;
             default:
                 break;
         }
