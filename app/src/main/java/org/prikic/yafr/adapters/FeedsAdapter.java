@@ -33,12 +33,12 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtTitle, txtPubDate;
-        public ImageView imgFeedItemDetails;
+        TextView txtTitle, txtPubDate;
+        ImageView imgFeedItemDetails;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
 
             txtTitle = (TextView) view.findViewById(R.id.txt_title);

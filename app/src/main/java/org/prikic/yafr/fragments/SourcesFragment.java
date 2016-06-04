@@ -101,13 +101,13 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
         return fragmentView;
     }
 
-    public void displaySnackbarEditedRssChannel(RssChannel rssChannel, int clickedItemPosition) {
+    public void displaySnackbarEditedRssChannel() {
 
         Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.rss_channel_edited, Snackbar.LENGTH_LONG);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundResource(R.color.colorPrimary);
         snackbar.show();
-        adapter.updateRssChannelListAtPosition(rssChannel, clickedItemPosition);
+        sourcesLoader.onContentChanged();
 
     }
 

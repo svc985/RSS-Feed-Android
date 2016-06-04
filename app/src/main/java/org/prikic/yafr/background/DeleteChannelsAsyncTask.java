@@ -26,7 +26,11 @@ public class DeleteChannelsAsyncTask extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //TODO perform check - mainActivity may be null
+        if (mainActivity == null) {
+            Timber.e("mainActivity is null!!!");
+            return;
+        }
+
         mainActivity.enableProgressSpinner(true);
     }
 
@@ -43,6 +47,11 @@ public class DeleteChannelsAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+
+        if (mainActivity == null) {
+            Timber.e("mainActivity is null!!!");
+            return;
+        }
 
         mainActivity.enableProgressSpinner(false);
 

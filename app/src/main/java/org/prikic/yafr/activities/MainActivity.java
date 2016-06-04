@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.EDIT, this).execute();
 
         SourcesFragment sourcesFragment = (SourcesFragment) getSupportFragmentManager().findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
-        sourcesFragment.displaySnackbarEditedRssChannel(rssChannel, clickedItemPosition);
+        sourcesFragment.displaySnackbarEditedRssChannel();
     }
 
     public void enableProgressSpinner(boolean flag) {

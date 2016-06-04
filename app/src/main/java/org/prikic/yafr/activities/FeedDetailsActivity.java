@@ -21,9 +21,9 @@ import timber.log.Timber;
 
 public class FeedDetailsActivity extends AppCompatActivity {
 
-    FeedItemExtended feedItemExtended;
+    private FeedItemExtended feedItemExtended;
 
-    FeedItemDAO feedItemDAO = FeedItemDAO.getInstance(this);
+    private FeedItemDAO feedItemDAO = FeedItemDAO.getInstance(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

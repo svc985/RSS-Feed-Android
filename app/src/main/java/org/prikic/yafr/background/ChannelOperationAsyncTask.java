@@ -11,6 +11,8 @@ import org.prikic.yafr.model.RssChannel;
 import org.prikic.yafr.util.Constants;
 import org.prikic.yafr.util.RssChannelOperation;
 
+import timber.log.Timber;
+
 public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel> {
 
     private Object object;
@@ -29,7 +31,11 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //TODO perform check - mainActivity may be null
+        if (mainActivity == null) {
+            Timber.e("mainActivity is null!!!");
+            return;
+        }
+
         mainActivity.enableProgressSpinner(true);
     }
 
@@ -63,6 +69,12 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
     @Override
     protected void onPostExecute(RssChannel rssChannel) {
         super.onPostExecute(rssChannel);
+
+        if (mainActivity == null) {
+            Timber.e("mainActivity is null!!!");
+            return;
+        }
+
         mainActivity.enableProgressSpinner(false);
 
         if ( operation == RssChannelOperation.SAVE) {
