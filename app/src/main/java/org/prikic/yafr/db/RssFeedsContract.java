@@ -32,7 +32,6 @@ public final class RssFeedsContract {
     /* Inner class that defines the table contents */
     public static abstract class FeedItemEntry implements BaseColumns {
         public static final String TABLE_NAME = "feed";
-        //TODO save according to the ISO8601 string ("YYYY-MM-DD HH:MM:SS.SSS")
         public static final String COLUMN_PUB_DATE = "pubDate";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_LINK = "link";

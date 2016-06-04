@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import org.prikic.yafr.db.RssFeedsContract;
 import org.prikic.yafr.db.RssFeedsDbHelper;
 import org.prikic.yafr.model.FeedItemExtended;
+import org.prikic.yafr.util.Util;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class FeedItemDAO {
         database = rssFeedsDbHelper.getWritableDatabase();
     }
 
-    public void close() {
+    private void close() {
         database.close();
     }
 
@@ -56,9 +57,13 @@ public class FeedItemDAO {
         //open db connection - write mode
         open();
 
+        String pubDateISO8601 = Util.parseDateToISO8601(feedItemExtended.getPubDate());
+        Timber.d(pubDateISO8601);
+
         //Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(RssFeedsContract.FeedItemEntry.COLUMN_PUB_DATE, feedItemExtended.getPubDate());
+
+        values.put(RssFeedsContract.FeedItemEntry.COLUMN_PUB_DATE, pubDateISO8601);
         values.put(RssFeedsContract.FeedItemEntry.COLUMN_TITLE, feedItemExtended.getTitle());
         values.put(RssFeedsContract.FeedItemEntry.COLUMN_LINK, feedItemExtended.getLink());
         values.put(RssFeedsContract.FeedItemEntry.COLUMN_DESCRIPTION, feedItemExtended.getDescription());
@@ -96,7 +101,8 @@ public class FeedItemDAO {
         open();
 
         // How you want the results sorted in the resulting Cursor
-        //TODO sort by pubDate
+        String sortOrder =
+                RssFeedsContract.FeedItemEntry.COLUMN_PUB_DATE + " DESC";
 
         Cursor c = database.query(
                 RssFeedsContract.FeedItemEntry.TABLE_NAME,  // The table to query
@@ -105,9 +111,10 @@ public class FeedItemDAO {
                 null,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                null                                 // The sort order
+                sortOrder                                 // The sort order
         );
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             while (c.moveToNext()) {
                 //long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));
