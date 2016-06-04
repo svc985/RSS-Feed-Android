@@ -23,7 +23,7 @@ import timber.log.Timber;
 
 public class FavoritesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<FeedItemExtended>>{
 
-    RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
 
     private ArrayList<FeedItemExtended> feedItems;
 

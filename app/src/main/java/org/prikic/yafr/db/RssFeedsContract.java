@@ -17,7 +17,7 @@ public final class RssFeedsContract {
         private static final String TEXT_TYPE = " TEXT";
         private static final String INTEGER_TYPE = " INTEGER";
         private static final String COMMA_SEP = ",";
-        protected static final String SQL_CREATE_ENTRIES =
+        static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + ChannelEntry.TABLE_NAME + " (" +
                 ChannelEntry._ID + " INTEGER PRIMARY KEY," +
                 ChannelEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
@@ -25,7 +25,7 @@ public final class RssFeedsContract {
                         ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE + INTEGER_TYPE +
                 ")";
 
-        protected static final String SQL_DELETE_ENTRIES =
+        static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + ChannelEntry.TABLE_NAME;
     }
 
@@ -40,7 +40,7 @@ public final class RssFeedsContract {
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
-        protected static final String SQL_CREATE_ENTRIES =
+        static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + FeedItemEntry.TABLE_NAME + " (" +
                         FeedItemEntry._ID + " INTEGER PRIMARY KEY," +
                         FeedItemEntry.COLUMN_PUB_DATE + TEXT_TYPE + COMMA_SEP +
@@ -50,7 +50,7 @@ public final class RssFeedsContract {
                         FeedItemEntry.COLUMN_SOURCE_IMAGE_URL + TEXT_TYPE +
                         ")";
 
-        protected static final String SQL_DELETE_ENTRIES =
+        static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + FeedItemEntry.TABLE_NAME;
     }
 

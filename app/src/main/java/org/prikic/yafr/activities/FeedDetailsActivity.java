@@ -48,8 +48,10 @@ public class FeedDetailsActivity extends AppCompatActivity {
 
         final ImageView favoriteSelectionImage = (ImageView) findViewById(R.id.favorite_selection_image);
 
-        if(isFavorite)
+        if(isFavorite) {
             favoriteSelectionImage.setImageResource(R.drawable.favorite_selected);
+            favoriteSelectionImage.setTag("Selected");
+        }
 
         if (favoriteSelectionImage != null) {
             favoriteSelectionImage.setOnClickListener(new View.OnClickListener() {

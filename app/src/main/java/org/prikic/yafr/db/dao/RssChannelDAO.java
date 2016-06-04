@@ -17,6 +17,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
+@SuppressWarnings("TryFinallyCanBeTryWithResources")
 public class RssChannelDAO {
 
     //Database fields

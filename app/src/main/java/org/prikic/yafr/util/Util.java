@@ -1,35 +1,14 @@
 package org.prikic.yafr.util;
 
-import org.prikic.yafr.model.FeedItemExtended;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class Util {
-
-    public static List<Object> getDummyList() {
-
-        List<Object> list = new LinkedList<>();
-        list.add("object 1");
-        list.add("object 2");
-        list.add("object 3");
-
-        return list;
-    }
-
-    public static ArrayList<FeedItemExtended> getFeedItems() {
-        ArrayList<FeedItemExtended> feedItems = new ArrayList<>();
-        feedItems.add(new FeedItemExtended("desc", "link", "title", "pubDate", "source image url"));
-        feedItems.add(new FeedItemExtended("desc 2", "link 2", "title 2", "pubDate 2", "source image url2"));
-
-        return feedItems;
-    }
 
     public static String parseDate(String pubDate) {
 

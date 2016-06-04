@@ -16,6 +16,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
+@SuppressWarnings("TryFinallyCanBeTryWithResources")
 public class FeedItemDAO {
 
     private static FeedItemDAO instance;
@@ -114,7 +115,6 @@ public class FeedItemDAO {
                 sortOrder                                 // The sort order
         );
 
-        //noinspection TryFinallyCanBeTryWithResources
         try {
             while (c.moveToNext()) {
                 //long id = c.getLong(c.getColumnIndexOrThrow(RssFeedsContract.ChannelEntry._ID));

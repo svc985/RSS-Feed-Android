@@ -21,7 +21,7 @@ import java.util.Collections;
 public class FeedsFragment extends Fragment {
 
     private ArrayList<FeedItemExtended> feedItemList;
-    RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
 
     public FeedsFragment() {
     }

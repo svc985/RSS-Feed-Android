@@ -40,7 +40,7 @@ public final class ServiceFactory {
         return instance;
     }
 
-    public OkHttpClient getClient() {
+    private OkHttpClient getClient() {
         return client;
     }
 
