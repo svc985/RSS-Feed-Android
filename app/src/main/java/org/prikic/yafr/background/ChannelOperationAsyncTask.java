@@ -13,7 +13,7 @@ import org.prikic.yafr.util.RssChannelOperation;
 
 import timber.log.Timber;
 
-public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel> {
+public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private Object object;
     private RssChannelDAO rssChannelDAO;
@@ -40,13 +40,11 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
     }
 
     @Override
-    protected RssChannel doInBackground(Void... params) {
+    protected Void doInBackground(Void... params) {
         switch (operation) {
             case SAVE:
                 RssChannel rssChannel1 = (RssChannel) object;
-                Long id = rssChannelDAO.saveRssChannel(rssChannel1);
-                rssChannel1.setId(id);
-                return rssChannel1;
+                rssChannelDAO.saveRssChannel(rssChannel1);
             case EDIT:
                 RssChannel rssChannel2 = (RssChannel) object;
                 rssChannelDAO.updateRssChannel(rssChannel2);
@@ -55,11 +53,6 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
                 RssChannel rssChannel3 = (RssChannel) object;
                 rssChannelDAO.updateRssChannelActiveFlag(rssChannel3);
                 break;
-            case DELETE:
-                //@SuppressWarnings("unchecked")
-                //List<Long> channelIdsToDelete = (List<Long>) object;
-                //rssChannelDAO.deleteRssChannels(channelIdsToDelete);
-                break;
             default:
                 break;
         }
@@ -67,8 +60,7 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
     }
 
     @Override
-    protected void onPostExecute(RssChannel rssChannel) {
-        super.onPostExecute(rssChannel);
+    protected void onPostExecute(Void result) {
 
         if (mainActivity == null) {
             Timber.e("mainActivity is null!!!");

@@ -43,15 +43,11 @@ public class MainActivity extends AppCompatActivity
 
     private ViewPagerAdapter viewPagerAdapter;
 
-    private boolean showProgressSpinnerInToolbar = false;
-
     private TextView txtToolbarCounter;
     private Toolbar toolbar;
     private ImageView imageIconActionToolbar;
 
-    private void setShowProgressSpinnerInToolbar(boolean showProgressSpinnerInToolbar) {
-        this.showProgressSpinnerInToolbar = showProgressSpinnerInToolbar;
-    }
+    private boolean showProgressSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,13 +168,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem progressSpinner = menu.findItem(R.id.progress_spinner_menu_item);
-        //if (isInChoiceMode) {
-            if (!showProgressSpinnerInToolbar) {
-                progressSpinner.setVisible(false);
-            } else {
-                progressSpinner.setVisible(true);
-            }
-        //}
+        progressSpinner.setVisible(showProgressSpinner);
 
         return true;
     }
@@ -226,19 +216,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void enableProgressSpinner(boolean flag) {
-        if (flag) {
-            setShowProgressSpinnerInToolbar(true);
-        }
-        else {
-            setShowProgressSpinnerInToolbar(false);
-        }
+
+        showProgressSpinner = flag;
         invalidateOptionsMenu();
+
     }
 
     /*shows the action mode toolbar*/
     public void showActionModeToolbar() {
         Timber.d("show action mode toolbar");
-        /*show the title (X) and the counter*/
+        /*show the counter*/
         txtToolbarCounter.setVisibility(View.VISIBLE);
         imageIconActionToolbar.setImageResource(R.mipmap.ic_arrow_back_white_24dp);
         imageIconActionToolbar.setTag("actionMode");
@@ -248,17 +235,14 @@ public class MainActivity extends AppCompatActivity
         toolbar.inflateMenu(R.menu.action_mode_menu);
         /*if you need to use the tag later, set the tag*/
         toolbar.setTag("actionModeToolbar");
-        /*show the save icon in the toolbar*/
-        MenuItem saveSelectedItemsMenuItem = toolbar.getMenu().findItem(R.id.action_mode_menu_delete);
-        saveSelectedItemsMenuItem.setIcon(R.mipmap.ic_delete_white_24dp);
+        /*show the delete icon in the toolbar*/
+        MenuItem deleteSelectedItemsMenuItem = toolbar.getMenu().findItem(R.id.action_mode_menu_delete);
+        deleteSelectedItemsMenuItem.setIcon(R.mipmap.ic_delete_white_24dp);
     }
 
     /*show the normal toolbar*/
     public void showNormalToolbar() {
-        /*set the counter and X text views invisible*/
-        //txtToolbarCounter.setVisibility(View.INVISIBLE);
         txtToolbarCounter.setText(getResources().getString(R.string.app_name));
-        //txtToolbarTitle.setVisibility(View.INVISIBLE);
         imageIconActionToolbar.setImageResource(R.mipmap.ic_launcher);
         imageIconActionToolbar.setTag("classicMode");
         /*clear the menu*/
@@ -268,25 +252,22 @@ public class MainActivity extends AppCompatActivity
         /*if you need to use the tag later, set the tag*/
         toolbar.setTag("normalToolbar");
 
-        //TODO progress spinner should be fixed, here it just remains hidden
-        enableProgressSpinner(false);
+        //TODO progress spinner should be fixed
+
     }
 
     /*updates the counter on toolbar to show
     * how many items have been selected*/
     public void updateToolbar(int listSize) {
-        //int selectedItemsCounter = selectedItemIdList.size();
-        /*show the title (X) and the counter if there are selected items*/
+        /*show the counter if there are selected items*/
         if (listSize > 0) {
             /*show the text views*/
             txtToolbarCounter.setVisibility(View.VISIBLE);
-            //txtToolbarTitle.setVisibility(View.VISIBLE);
             /*set the counter*/
             txtToolbarCounter.setText(String.valueOf(listSize));
         }
     }
 
-    // Broadcast receiver for receiving updates from the IntentService
     private class ResponseReceiver extends BroadcastReceiver {
         // Prevents instantiation
         private ResponseReceiver() {

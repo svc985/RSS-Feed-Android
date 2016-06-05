@@ -169,8 +169,6 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                 public boolean onSingleTapConfirmed(MotionEvent e) {
                     /*check if in choice mode
                     * -single tap only works if in choice mode*/
-                    /*check if in choice mode
-                    * -single tap only works if in choice mode*/
                     if (isInChoiceMode) {
                         /*get the selected view*/
                         View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
