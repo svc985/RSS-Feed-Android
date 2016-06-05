@@ -2,6 +2,8 @@ package org.prikic.yafr.util;
 
 public class Constants {
 
+    public static final int NUM_OF_FRAGMENTS = 3;
+
     public static final String BROADCAST_ACTION_RSS_CHANNEL_SAVED =
             "org.prikic.yafr.rssChannel.SAVED";
     public static final String BROADCAST_ACTION_FEEDS_FETCHED =

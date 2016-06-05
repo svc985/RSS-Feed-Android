@@ -101,13 +101,12 @@ public class MainActivity extends AppCompatActivity
     private void setupViewPager(ViewPager viewPager) {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(Constants.NUM_OF_FRAGMENTS - 1);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final Map<String, String> fragmentTags = new HashMap<>();
-        private static final int NUM_OF_FRAGMENTS = 3;
 
         private ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return NUM_OF_FRAGMENTS;
+            return Constants.NUM_OF_FRAGMENTS;
         }
 
         @Override

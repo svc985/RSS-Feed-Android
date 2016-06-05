@@ -75,8 +75,6 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
             return;
         }
 
-        mainActivity.enableProgressSpinner(false);
-
         if ( operation == RssChannelOperation.SAVE) {
 
             Intent localIntent = new Intent(Constants.BROADCAST_ACTION_RSS_CHANNEL_SAVED);
@@ -84,5 +82,7 @@ public class ChannelOperationAsyncTask extends AsyncTask<Void, Void, RssChannel>
             // Broadcasts the Intent to receivers in this app.
             LocalBroadcastManager.getInstance(mainActivity).sendBroadcast(localIntent);
         }
+
+        mainActivity.enableProgressSpinner(false);
     }
 }
