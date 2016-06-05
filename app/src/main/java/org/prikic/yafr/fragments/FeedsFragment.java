@@ -18,6 +18,8 @@ import org.prikic.yafr.model.FeedItemExtended;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import timber.log.Timber;
+
 public class FeedsFragment extends Fragment {
 
     private ArrayList<FeedItemExtended> feedItemList;
@@ -28,7 +30,10 @@ public class FeedsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        Timber.d("FeedsFragment - onCreate");
 
         //start service for fetching feeds
         Activity activity = getActivity();

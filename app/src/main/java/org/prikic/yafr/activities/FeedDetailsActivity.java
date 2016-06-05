@@ -1,5 +1,6 @@
 package org.prikic.yafr.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class FeedDetailsActivity extends AppCompatActivity {
 
     private FeedItemDAO feedItemDAO = FeedItemDAO.getInstance(this);
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -80,6 +82,7 @@ public class FeedDetailsActivity extends AppCompatActivity {
         WebView webView = (WebView) findViewById(R.id.feed_item_web_view);
 
         webView.loadUrl(feedItemExtended.getLink());
+        webView.getSettings().setJavaScriptEnabled(true);
 
         TextView feedDetailsTitle = (TextView) findViewById(R.id.feed_details_title);
         TextView feedDetailsDescription = (TextView) findViewById(R.id.feed_details_description);
