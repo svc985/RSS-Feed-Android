@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_mode_menu_delete"
         android:icon="@mipmap/ic_delete_white_24dp"
         android:orderInCategory="103"
         android:title="@string/menu_title_delete"
         app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/progress_spinner_menu_item"
-        android:visible="false"
-        android:orderInCategory="1"
-        android:title="@string/lorem_ipsum_short"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="android.widget.ProgressBar">
-    </item>
 </menu>

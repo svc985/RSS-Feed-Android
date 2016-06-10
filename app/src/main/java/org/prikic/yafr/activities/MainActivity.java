@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         imageIconActionToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imageIconActionToolbar.getTag().equals("actionMode")) {
+                if (toolbar.getTag().equals("actionMode")) {
                     Timber.d("return to classic mode...");
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     SourcesFragment sourcesFragment = (SourcesFragment) fragmentManager.findFragmentByTag(viewPagerAdapter.fragmentTags.get(FragmentTitle.SOURCES));
@@ -165,10 +166,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem progressSpinner = menu.findItem(R.id.progress_spinner_menu_item);
-        progressSpinner.setVisible(showProgressSpinner);
+        if (toolbar.getTag().equals("actionMode")) {
+            getMenuInflater().inflate(R.menu.action_mode_menu, menu);
+
+            /*show the counter*/
+            txtToolbarCounter.setVisibility(View.VISIBLE);
+            imageIconActionToolbar.setImageResource(R.mipmap.ic_arrow_back_white_24dp);
+
+            MenuItem deleteSelectedRowsMenuItem = menu.findItem(R.id.action_mode_menu_delete);
+            deleteSelectedRowsMenuItem.setIcon(R.mipmap.ic_delete_white_24dp);
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+
+            txtToolbarCounter.setText(getResources().getString(R.string.app_name));
+            imageIconActionToolbar.setImageResource(R.mipmap.ic_launcher);
+
+            MenuItem progressSpinner = menu.findItem(R.id.progress_spinner_menu_item);
+            progressSpinner.setVisible(showProgressSpinner);
+        }
 
         return true;
     }
@@ -225,33 +242,18 @@ public class MainActivity extends AppCompatActivity
     /*shows the action mode toolbar*/
     public void showActionModeToolbar() {
         Timber.d("show action mode toolbar");
-        /*show the counter*/
-        txtToolbarCounter.setVisibility(View.VISIBLE);
-        imageIconActionToolbar.setImageResource(R.mipmap.ic_arrow_back_white_24dp);
-        imageIconActionToolbar.setTag("actionMode");
-        /*clear the overflow menu*/
-        toolbar.getMenu().clear();
-        /*inflate the action menu*/
-        toolbar.inflateMenu(R.menu.action_mode_menu);
         /*if you need to use the tag later, set the tag*/
-        toolbar.setTag("actionModeToolbar");
+        toolbar.setTag("actionMode");
         /*show the delete icon in the toolbar*/
-        MenuItem deleteSelectedItemsMenuItem = toolbar.getMenu().findItem(R.id.action_mode_menu_delete);
-        deleteSelectedItemsMenuItem.setIcon(R.mipmap.ic_delete_white_24dp);
+        invalidateOptionsMenu();
     }
 
     /*show the normal toolbar*/
     public void showNormalToolbar() {
-        txtToolbarCounter.setText(getResources().getString(R.string.app_name));
-        imageIconActionToolbar.setImageResource(R.mipmap.ic_launcher);
-        imageIconActionToolbar.setTag("classicMode");
-        /*clear the menu*/
-        toolbar.getMenu().clear();
-        /*inflate the overflow menu*/
-        toolbar.inflateMenu(R.menu.menu_main);
+        Timber.d("show normal mode toolbar");
         /*if you need to use the tag later, set the tag*/
-        toolbar.setTag("normalToolbar");
-
+        toolbar.setTag("normalMode");
+        invalidateOptionsMenu();
         //TODO progress spinner should be fixed
 
     }
