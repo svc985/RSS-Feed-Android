@@ -47,10 +47,6 @@ public class RssChannelDAO {
         database = rssFeedsDbHelper.getWritableDatabase();
     }
 
-    private void close() {
-        database.close();
-    }
-
     public long saveRssChannel(RssChannel rssChannel) {
         //open db connection - write mode
         open();
@@ -60,15 +56,12 @@ public class RssChannelDAO {
         values.put(RssFeedsContract.ChannelEntry.COLUMN_NAME, rssChannel.getName());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_URL, rssChannel.getUrl());
         //default for activeRssChannel is true
-        //TODO for testing purposes
-        int activeFlag = DBUtil.convertBooleanToInt(false);
+        int activeFlag = DBUtil.convertBooleanToInt(rssChannel.isChannelActive());
         values.put(RssFeedsContract.ChannelEntry.COLUMN_IS_CHANNEL_ACTIVE, activeFlag);
 
         //Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = database.insert(RssFeedsContract.ChannelEntry.TABLE_NAME, null, values);
-
-        close();
 
         return newRowId;
     }
@@ -105,7 +98,6 @@ public class RssChannelDAO {
         }
         finally {
             c.close();
-            close();
         }
         return rssChannels;
     }
@@ -126,7 +118,6 @@ public class RssChannelDAO {
 
         database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        close();
     }
 
     public void updateRssChannelActiveFlag(RssChannel rssChannel) {
@@ -145,7 +136,6 @@ public class RssChannelDAO {
 
         database.update(RssFeedsContract.ChannelEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        close();
     }
 
     public void deleteRssChannels(ArrayList<Long> idsToDeleteList) {
@@ -162,7 +152,6 @@ public class RssChannelDAO {
             // Issue SQL statement.
             database.delete(RssFeedsContract.ChannelEntry.TABLE_NAME, selection, selectionArgs);
         }
-        close();
     }
 
     public List<RssChannel> getActiveRssChannels() {
@@ -199,7 +188,6 @@ public class RssChannelDAO {
         }
         finally {
             c.close();
-            close();
         }
         return activeRssChannels;
     }

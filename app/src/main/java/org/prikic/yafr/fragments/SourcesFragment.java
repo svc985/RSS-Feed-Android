@@ -90,7 +90,7 @@ public class SourcesFragment extends Fragment implements LoaderManager.LoaderCal
                 @Override
                 public void onClick(View view) {
                     Timber.d("open add sources fragment/activity");
-                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(new RssChannel(), RssChannelOperation.SAVE, -1);
+                    SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(new RssChannel(), RssChannelOperation.SAVE);
                     fragment.show(getActivity().getSupportFragmentManager(), "SaveOrEditChannelFragment");
                 }
             });

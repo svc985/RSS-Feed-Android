@@ -69,7 +69,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.ViewHold
                 RssChannel rssChannel = rssChannelList.get(clickedItemPosition);
 
                 FragmentActivity activity = SourcesAdapter.this.fragmentActivity;
-                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(rssChannel, RssChannelOperation.EDIT, clickedItemPosition);
+                SaveOrEditChannelFragment fragment = SaveOrEditChannelFragment.newInstance(rssChannel, RssChannelOperation.EDIT);
                 fragment.show(activity.getSupportFragmentManager(), "SaveOrEditChannelFragment");
 
             }

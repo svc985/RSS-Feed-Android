@@ -24,13 +24,11 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
     private EditText editTxtName, editTxtUrl;
 
-    private int clickedItemPosition;
-
     private RssChannel rssChannel;
 
     private RssChannelOperation operation;
 
-    private OnRssChannelOperationListener mListener;
+    private OnRssChannelOperationListener rssChannelOperationListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +36,6 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
         operation = (RssChannelOperation) getArguments().getSerializable("operation");
         rssChannel = (RssChannel) getArguments().getSerializable("rssChannel");
-        clickedItemPosition = getArguments().getInt("clickedItemPosition");
     }
 
     @NonNull
@@ -56,7 +53,7 @@ public class SaveOrEditChannelFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnRssChannelOperationListener) context;
+            rssChannelOperationListener = (OnRssChannelOperationListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnRssChannelOperationListener");
         }
@@ -96,10 +93,10 @@ public class SaveOrEditChannelFragment extends DialogFragment {
                 if (operation == RssChannelOperation.SAVE) {
                     //default for isChannelActive is true
                     rssChannel.setChannelActive(true);
-                    mListener.onRssChannelSaved(rssChannel);
+                    rssChannelOperationListener.onRssChannelSaved(rssChannel);
                 }
                 else {
-                    mListener.onRssChannelEdited(rssChannel, clickedItemPosition);
+                    rssChannelOperationListener.onRssChannelEdited(rssChannel);
                 }
 
                 SaveOrEditChannelFragment.this.dismiss();
@@ -129,16 +126,15 @@ public class SaveOrEditChannelFragment extends DialogFragment {
 
     public interface OnRssChannelOperationListener {
         void onRssChannelSaved(RssChannel rssChannel);
-        void onRssChannelEdited(RssChannel rssChannel, int clickedItemPosition);
+        void onRssChannelEdited(RssChannel rssChannel);
     }
 
-    public static SaveOrEditChannelFragment newInstance(RssChannel rssChannel, RssChannelOperation operation, int clickedItemPosition) {
+    public static SaveOrEditChannelFragment newInstance(RssChannel rssChannel, RssChannelOperation operation) {
         SaveOrEditChannelFragment myFragment = new SaveOrEditChannelFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("rssChannel", rssChannel);
         args.putSerializable("operation", operation);
-        args.putInt("clickedItemPosition", clickedItemPosition);
         myFragment.setArguments(args);
 
         return myFragment;

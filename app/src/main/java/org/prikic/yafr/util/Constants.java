@@ -16,4 +16,6 @@ public class Constants {
             "org.prikic.yafr.feedItem";
     public static final String INTENT_FEED_IS_FAVORITE =
             "org.prikic.yafr.feedItem.favorite";
+
+    public static final int HTTP_STATUS_OK = 200;
 }

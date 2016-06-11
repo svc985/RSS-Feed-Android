@@ -44,13 +44,13 @@ public class FetchFeedsService extends IntentService {
             try {
                 Response<Feed> feedResponse = fetchFeeds.execute();
                 Feed feed = feedResponse.body();
-                Timber.d("response code:%d", feedResponse.code());
-                if (feed.getChannel().getFeedItems() != null) {
+                int responseCode = feedResponse.code();
+                if (responseCode == Constants.HTTP_STATUS_OK) {
                     ArrayList<FeedItem> feedItems = feed.getChannel().getFeedItems();
                     String feedImageURL = feed.getChannel().getFeedImage().getUrl();
                     ArrayList<FeedItemExtended> feedItemsExtended = convertFeedItemsToExtendedForm(feedItems, feedImageURL);
 
-                    Timber.d("feedResponse:%d", feedItemsExtended.size());
+                    Timber.d("feedResponse size:%d", feedItemsExtended.size());
                     Timber.d("feed image logo URL:%s", feedImageURL);
 
                     //send local broadcast
@@ -59,6 +59,9 @@ public class FetchFeedsService extends IntentService {
                     localIntent.putExtra(Constants.EXTENDED_DATA_FEED_ITEM_LIST, feedItemsExtended);
                     // Broadcasts the Intent to receivers in this app.
                     LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
+                }
+                else {
+                    Timber.d("response code:%d", responseCode);
                 }
 
             } catch (IOException e) {

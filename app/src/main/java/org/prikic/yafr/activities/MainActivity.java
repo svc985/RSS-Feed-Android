@@ -223,8 +223,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRssChannelEdited(RssChannel rssChannel, int clickedItemPosition) {
-        Timber.d("editing Rss channel in db on position %d", clickedItemPosition);
+    public void onRssChannelEdited(RssChannel rssChannel) {
+        Timber.d("editing Rss channel in db...");
 
         new ChannelOperationAsyncTask(rssChannel, RssChannelOperation.EDIT, this).execute();
 
