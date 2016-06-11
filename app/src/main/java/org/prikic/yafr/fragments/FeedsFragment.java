@@ -61,8 +61,6 @@ public class FeedsFragment extends Fragment {
     }
 
     public void updateFeedItemsList(ArrayList<FeedItemExtended> feedItems) {
-
-        feedItemList.clear();
         feedItemList.addAll(feedItems == null ? Collections.<FeedItemExtended>emptyList() : feedItems);
         adapter.notifyDataSetChanged();
     }

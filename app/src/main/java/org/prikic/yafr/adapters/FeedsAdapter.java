@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.prikic.yafr.R;
 import org.prikic.yafr.activities.FeedDetailsActivity;
 import org.prikic.yafr.model.FeedItemExtended;
@@ -36,7 +38,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle, txtPubDate;
-        ImageView imgFeedItemDetails;
+        ImageView imgFeedItemDetails, imgChannel;
 
         ViewHolder(View view) {
             super(view);
@@ -44,6 +46,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             txtTitle = (TextView) view.findViewById(R.id.txt_title);
             txtPubDate = (TextView) view.findViewById(R.id.txt_pub_date);
             imgFeedItemDetails = (ImageView) view.findViewById(R.id.btn_show_feed_details);
+            imgChannel = (ImageView) view.findViewById(R.id.feed_image);
 
             imgFeedItemDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +80,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         String pubDate = feedItem.getPubDate();
         String formatedDate = Util.parseDate(pubDate);
         holder.txtPubDate.setText(formatedDate);
+
+        Picasso.with(fragmentActivity)
+                .load(feedItem.getSourceImageUrl())
+                .resize(60, 30)
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.progress_animation)
+                .into(holder.imgChannel);
 
     }
 

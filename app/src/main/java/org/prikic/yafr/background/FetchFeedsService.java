@@ -7,7 +7,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import org.prikic.yafr.db.dao.RssChannelDAO;
 import org.prikic.yafr.model.FeedItemExtended;
 import org.prikic.yafr.model.RssChannel;
+import org.prikic.yafr.model.xmlService.Channel;
 import org.prikic.yafr.model.xmlService.Feed;
+import org.prikic.yafr.model.xmlService.FeedImage;
 import org.prikic.yafr.model.xmlService.FeedItem;
 import org.prikic.yafr.service.ServiceFactory;
 import org.prikic.yafr.util.Constants;
@@ -39,7 +41,7 @@ public class FetchFeedsService extends IntentService {
 
             String url = rssChannel.getUrl();
             Call<Feed> fetchFeeds = ServiceFactory.buildService().getFeeds(url);
-            Timber.d("test URL is:%s", url);
+            Timber.d("channel's URL is:%s", url);
 
             try {
                 Response<Feed> feedResponse = fetchFeeds.execute();
@@ -47,11 +49,11 @@ public class FetchFeedsService extends IntentService {
                 int responseCode = feedResponse.code();
                 if (responseCode == Constants.HTTP_STATUS_OK) {
                     ArrayList<FeedItem> feedItems = feed.getChannel().getFeedItems();
-                    String feedImageURL = feed.getChannel().getFeedImage().getUrl();
-                    ArrayList<FeedItemExtended> feedItemsExtended = convertFeedItemsToExtendedForm(feedItems, feedImageURL);
+                    String channelImageURL = getChannelImageURL(feed);
+                    ArrayList<FeedItemExtended> feedItemsExtended = convertFeedItemsToExtendedForm(feedItems, channelImageURL);
 
                     Timber.d("feedResponse size:%d", feedItemsExtended.size());
-                    Timber.d("feed image logo URL:%s", feedImageURL);
+                    Timber.d("channel image logo URL:%s", channelImageURL);
 
                     //send local broadcast
                     Intent localIntent = new Intent(Constants.BROADCAST_ACTION_FEEDS_FETCHED);
@@ -79,5 +81,17 @@ public class FetchFeedsService extends IntentService {
                     feedItem.getTitle(), feedItem.getPubDate(), feedImageURL));
         }
         return feedItemsExtended;
+    }
+
+    private String getChannelImageURL(Feed feed) {
+
+        Channel channel = feed.getChannel();
+        if (channel != null) {
+            FeedImage feedImage = channel.getFeedImage();
+            if (feedImage != null) {
+                return feedImage.getUrl();
+            }
+        }
+        return "";
     }
 }
