@@ -18,4 +18,6 @@ public class Constants {
             "org.prikic.yafr.feedItem.favorite";
 
     public static final int HTTP_STATUS_OK = 200;
+
+    public static final int REQUEST_CODE_FETCH_FEEDS_PERIODICALLY = 12345;
 }

@@ -36,7 +36,14 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <service android:name=".background.FetchFeedsService"/>
+        <service
+            android:name=".background.FetchFeedsService"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".background.FetchFeedsAlarmReceiver"
+            android:process=":remote" >
+        </receiver>
 
     </application>
 
