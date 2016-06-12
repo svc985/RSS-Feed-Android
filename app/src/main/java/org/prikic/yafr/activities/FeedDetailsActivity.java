@@ -1,10 +1,15 @@
 package org.prikic.yafr.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -93,5 +98,25 @@ public class FeedDetailsActivity extends AppCompatActivity {
         String pubDate = Util.parseDate(feedItemExtended.getPubDate());
         feedDetailsPubDate.setText(pubDate);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu resource file.
+        getMenuInflater().inflate(R.menu.feed_details_menu, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+
+        // Fetch and store ShareActionProvider
+        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+        Intent myShareIntent = new Intent(Intent.ACTION_SEND);
+        myShareIntent.setType("plain/text");
+        myShareIntent.putExtra(Intent.EXTRA_TEXT, feedItemExtended.getLink());
+        shareActionProvider.setShareIntent(myShareIntent);
+
+        // Return true to display menu
+        return true;
     }
 }

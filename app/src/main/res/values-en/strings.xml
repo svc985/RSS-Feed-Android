@@ -9,4 +9,6 @@
 
     <!-- toolbar -->
     <string name="menu_title_delete">Delete</string>
+    <string name="share">Share</string>
+
 </resources>

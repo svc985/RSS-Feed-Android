@@ -21,4 +21,6 @@
 
     <!-- toolbar -->
     <string name="menu_title_delete">Obriši</string>
+    <string name="share">Podeli</string>
+
 </resources>
